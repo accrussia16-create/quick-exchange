@@ -1,578 +1,543 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quick Exchange</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<title>Quick Exchange</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      color: #172033;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    .header {
-      background: #111827;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: #07111f;
+  color: #fff;
+}
 
-    .header h1 {
-      margin: 0;
-      font-size: 26px;
-    }
+.container {
+  width: min(1100px, 94%);
+  margin: auto;
+}
 
-    .container {
-      width: 92%;
-      max-width: 600px;
-      margin: 30px auto;
-    }
+header {
+  padding: 24px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 16px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-    }
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+}
 
-    h2 {
-      margin-top: 0;
-    }
+.support {
+  display: flex;
+  gap: 10px;
+}
 
-    label {
-      display: block;
-      margin-top: 18px;
-      margin-bottom: 7px;
-      font-weight: bold;
-    }
+.support a {
+  color: #fff;
+  text-decoration: none;
+  background: #102238;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+}
 
-    input,
-    select {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #d6dbe5;
-      border-radius: 9px;
-      font-size: 16px;
-    }
+.hero {
+  text-align: center;
+  padding: 45px 0 25px;
+}
 
-    .receive-box {
-      margin-top: 20px;
-      padding: 16px;
-      background: #f3f6fa;
-      border-radius: 10px;
-    }
+.hero h1 {
+  font-size: clamp(32px, 6vw, 58px);
+  margin: 0 0 12px;
+}
 
-    .receive-amount {
-      font-size: 25px;
-      font-weight: bold;
-      margin-top: 5px;
-    }
+.hero p {
+  color: #9fb0c5;
+  margin: 0;
+}
 
-    button {
-      width: 100%;
-      border: 0;
-      padding: 14px;
-      margin-top: 22px;
-      border-radius: 9px;
-      background: #111827;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.card {
+  max-width: 620px;
+  margin: 35px auto;
+  background: #0d1b2e;
+  border: 1px solid #1b324d;
+  border-radius: 24px;
+  padding: 25px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
 
-    button:hover {
-      opacity: 0.9;
-    }
+label {
+  display: block;
+  color: #a9b9cc;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
 
-    .upi-list {
-      margin-top: 15px;
-    }
+input,
+select {
+  width: 100%;
+  padding: 15px;
+  border-radius: 13px;
+  border: 1px solid #29425f;
+  background: #071525;
+  color: #fff;
+  outline: none;
+  font-size: 15px;
+}
 
-    .upi-button {
-      background: #2563eb;
-      margin-top: 10px;
-    }
+input:focus,
+select:focus {
+  border-color: #22c7b8;
+}
 
-    .message {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 8px;
-      background: #eef2ff;
-    }
+.field {
+  margin-bottom: 20px;
+}
 
-    .contact {
-      margin-top: 20px;
-      text-align: center;
-    }
+.rate-box {
+  padding: 14px;
+  background: #071525;
+  border: 1px solid #1e3b56;
+  border-radius: 14px;
+  margin-bottom: 18px;
+}
 
-    .contact a {
-      display: inline-block;
-      margin: 5px;
-      padding: 10px 15px;
-      border-radius: 8px;
-      background: #e5e7eb;
-      color: #111827;
-      text-decoration: none;
-    }
+.rate-box strong {
+  color: #2dd4bf;
+}
 
-    .hidden {
-      display: none;
-    }
-  </style>
+.receive-box {
+  background: #071525;
+  border-radius: 15px;
+  padding: 16px;
+  margin: 15px 0;
+}
+
+.receive-amount {
+  font-size: 30px;
+  font-weight: 800;
+  margin-top: 7px;
+}
+
+.receiver-fields {
+  display: none;
+}
+
+button {
+  width: 100%;
+  border: 0;
+  padding: 16px;
+  border-radius: 14px;
+  background: #17bfae;
+  color: #031018;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  opacity: .9;
+}
+
+.info {
+  text-align: center;
+  color: #8296ad;
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+.upi-section {
+  margin-top: 25px;
+}
+
+.upi-card {
+  background: #081727;
+  border: 1px solid #203b56;
+  padding: 14px;
+  border-radius: 14px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.upi-name {
+  font-weight: 700;
+}
+
+.countdown {
+  color: #2dd4bf;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.error {
+  color: #ff7b7b;
+  margin: 10px 0;
+  text-align: center;
+}
+
+@media(max-width:600px) {
+  .support {
+    display: none;
+  }
+
+  .card {
+    padding: 18px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="header">
-    <h1 id="siteName">Quick Exchange</h1>
-    <p>Fast & Simple Exchange</p>
+<div class="container">
+
+<header>
+  <div class="logo">⚡ Quick Exchange</div>
+
+  <div class="support" id="support"></div>
+</header>
+
+<section class="hero">
+  <h1>Fast & Simple Exchange</h1>
+  <p>Send your payment and receive through your preferred method.</p>
+</section>
+
+<div class="card">
+
+  <div class="field">
+    <label>Amount You Send</label>
+
+    <input
+      id="amount"
+      type="number"
+      min="0"
+      placeholder="Enter amount"
+    >
   </div>
 
-  <div class="container">
+  <div class="field">
+    <label>Receive With</label>
 
-    <div class="card">
+    <select id="receiveMethod">
+      <option value="">Loading methods...</option>
+    </select>
+  </div>
 
-      <h2>Exchange</h2>
+  <div class="rate-box">
+    Exchange Rate:
+    <strong id="rateText">—</strong>
+  </div>
 
-      <label>You Send</label>
+  <div class="receive-box">
+    <label>You Receive</label>
 
-      <select id="payMethod">
-        <option value="upi">UPI</option>
-      </select>
+    <div class="receive-amount" id="receiveAmount">
+      0
+    </div>
+  </div>
 
-      <input
-        id="amount"
-        type="number"
-        placeholder="Enter amount"
-        min="0"
-        step="0.01"
-      >
+  <div id="receiverFields" class="receiver-fields">
 
-      <label>You Receive</label>
+    <div id="normalReceiver">
 
-      <select id="receiveMethod">
-        <option value="easypaisa">EasyPaisa</option>
-        <option value="jazzcash">JazzCash</option>
-        <option value="usdt">USDT</option>
-      </select>
+      <div class="field">
+        <label>Receiver Name</label>
 
-      <div id="receiverFields"></div>
-
-      <div class="receive-box">
-
-        <div>You will receive</div>
-
-        <div
-          id="receiveAmount"
-          class="receive-amount"
+        <input
+          id="receiverName"
+          type="text"
+          placeholder="Full name"
         >
-          0
-        </div>
-
-        <div id="rateText">
-          Rate: -
-        </div>
-
       </div>
 
-      <button
-        id="createOrder"
-      >
-        Continue
-      </button>
+      <div class="field">
+        <label>Receiver Number</label>
 
-      <div
-        id="message"
-        class="message hidden"
-      ></div>
+        <input
+          id="receiverNumber"
+          type="text"
+          placeholder="Account / mobile number"
+        >
+      </div>
 
     </div>
 
+    <div id="usdtReceiver" style="display:none">
 
-    <div
-      id="contact"
-      class="contact"
-    ></div>
+      <div class="field">
+        <label>USDT Network</label>
+
+        <select id="network">
+          <option value="TRC20">TRC20</option>
+          <option value="BEP20">BEP20</option>
+          <option value="ERC20">ERC20</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>USDT Wallet Address</label>
+
+        <input
+          id="wallet"
+          type="text"
+          placeholder="Wallet address"
+        >
+      </div>
+
+    </div>
 
   </div>
 
+  <div id="error" class="error"></div>
+
+  <button id="continueBtn">
+    Continue
+  </button>
+
+  <div class="info">
+    Your exchange rate is locked when the order is created.
+  </div>
+
+</div>
+
+</div>
 
 <script>
 
-let config = null;
+let publicData = null;
 
+const amountInput =
+  document.getElementById("amount");
 
-// ==========================
-// LOAD SETTINGS
-// ==========================
+const methodSelect =
+  document.getElementById("receiveMethod");
 
-async function loadConfig() {
+const rateText =
+  document.getElementById("rateText");
 
-  try {
+const receiveAmount =
+  document.getElementById("receiveAmount");
 
-    const response =
-      await fetch("/api/public");
+const receiverFields =
+  document.getElementById("receiverFields");
 
-    config =
-      await response.json();
+const normalReceiver =
+  document.getElementById("normalReceiver");
 
+const usdtReceiver =
+  document.getElementById("usdtReceiver");
 
-    document.getElementById(
-      "siteName"
-    ).textContent =
-      config.siteName;
+const errorBox =
+  document.getElementById("error");
 
+async function loadPublic() {
 
-    setupMethods();
+  const response =
+    await fetch("/api/public");
 
-    updateReceiverFields();
+  const data =
+    await response.json();
 
-    calculate();
-
-
-  } catch (error) {
-
-    showMessage(
-      "Unable to load exchange settings."
+  if (!data.success) {
+    throw new Error(
+      data.message ||
+      "Unable to load."
     );
-
   }
 
-}
+  publicData = data;
 
+  renderMethods();
 
-// ==========================
-// METHODS
-// ==========================
-
-function setupMethods() {
-
-  const select =
-    document.getElementById(
-      "receiveMethod"
-    );
-
-  select.innerHTML = "";
-
-
-  const methods = [
-    ["easypaisa", "EasyPaisa"],
-    ["jazzcash", "JazzCash"],
-    ["usdt", "USDT"]
-  ];
-
-
-  methods.forEach(
-    ([value, label]) => {
-
-      if (
-        config.methods &&
-        config.methods[value] === false
-      ) {
-        return;
-      }
-
-      const option =
-        document.createElement("option");
-
-      option.value = value;
-      option.textContent = label;
-
-      select.appendChild(option);
-
-    }
-  );
-
-}
-
-
-// ==========================
-// RECEIVER FIELDS
-// ==========================
-
-function updateReceiverFields() {
-
-  const method =
-    document.getElementById(
-      "receiveMethod"
-    ).value;
-
-
-  const box =
-    document.getElementById(
-      "receiverFields"
-    );
-
-
-  if (method === "easypaisa") {
-
-    box.innerHTML = `
-      <label>EasyPaisa Number</label>
-      <input
-        id="receiverNumber"
-        type="text"
-        placeholder="03XXXXXXXXX"
-      >
-
-      <label>Account Name</label>
-      <input
-        id="receiverName"
-        type="text"
-        placeholder="Account name"
-      >
-    `;
-
-  }
-
-
-  else if (method === "jazzcash") {
-
-    box.innerHTML = `
-      <label>JazzCash Number</label>
-      <input
-        id="receiverNumber"
-        type="text"
-        placeholder="03XXXXXXXXX"
-      >
-
-      <label>Account Name</label>
-      <input
-        id="receiverName"
-        type="text"
-        placeholder="Account name"
-      >
-    `;
-
-  }
-
-
-  else if (method === "usdt") {
-
-    box.innerHTML = `
-      <label>USDT Wallet Address</label>
-
-      <input
-        id="receiverWallet"
-        type="text"
-        placeholder="Enter wallet address"
-      >
-
-      <label>Network</label>
-
-      <select id="receiverNetwork">
-        <option value="TRC20">TRC20</option>
-        <option value="BEP20">BEP20</option>
-        <option value="ERC20">ERC20</option>
-      </select>
-    `;
-
-  }
-
+  renderSupport();
 
   calculate();
-
 }
 
+function renderMethods() {
 
-// ==========================
-// CALCULATOR
-// ==========================
+  methodSelect.innerHTML = "";
+
+  const methods =
+    publicData.paymentMethods || [];
+
+  if (!methods.length) {
+
+    methodSelect.innerHTML =
+      `<option value="">No methods available</option>`;
+
+    return;
+  }
+
+  methods.forEach(method => {
+
+    const option =
+      document.createElement("option");
+
+    option.value =
+      method.id;
+
+    option.textContent =
+      `${method.flag || "🌐"} ${method.name}`;
+
+    methodSelect.appendChild(option);
+  });
+
+  methodSelect.value =
+    methods[0].id;
+}
+
+function renderSupport() {
+
+  const box =
+    document.getElementById("support");
+
+  const contact =
+    publicData.settings.contact || {};
+
+  let html = "";
+
+  if (contact.whatsapp) {
+    html +=
+      `<a href="${escapeAttr(contact.whatsapp)}" target="_blank">WhatsApp</a>`;
+  }
+
+  if (contact.telegram) {
+    html +=
+      `<a href="${escapeAttr(contact.telegram)}" target="_blank">Telegram</a>`;
+  }
+
+  box.innerHTML = html;
+}
+
+function getMethod() {
+
+  return (
+    publicData.paymentMethods || []
+  ).find(
+    method =>
+      method.id ===
+      methodSelect.value
+  );
+}
 
 function calculate() {
 
-  if (!config) {
+  const method =
+    getMethod();
+
+  if (!method) {
+    rateText.textContent = "—";
+    receiveAmount.textContent = "0";
     return;
   }
-
 
   const amount =
-    Number(
-      document.getElementById(
-        "amount"
-      ).value
-    );
-
-
-  const method =
-    document.getElementById(
-      "receiveMethod"
-    ).value;
-
-
-  const rate =
-    Number(
-      config.rates[method] || 0
-    );
-
-
-  if (
-    !amount ||
-    amount <= 0 ||
-    !rate
-  ) {
-
-    document.getElementById(
-      "receiveAmount"
-    ).textContent = "0";
-
-    document.getElementById(
-      "rateText"
-    ).textContent = "Rate: -";
-
-    return;
-  }
-
-
-  const feePercent =
-    Number(
-      config.feePercent || 0
-    );
-
-
-  const gross =
-    amount * rate;
-
+    Number(amountInput.value) || 0;
 
   const fee =
-    gross *
-    (feePercent / 100);
+    Number(
+      publicData.settings.feePercent
+    ) || 0;
 
+  const gross =
+    amount * Number(method.rate);
 
-  const receive =
-    gross - fee;
+  const finalAmount =
+    gross -
+    gross * (fee / 100);
 
+  rateText.textContent =
+    `1 unit = ${method.rate}`;
 
-  document.getElementById(
-    "receiveAmount"
-  ).textContent =
-    receive.toFixed(
-      method === "usdt" ? 6 : 2
+  receiveAmount.textContent =
+    formatNumber(
+      Math.max(finalAmount, 0)
     );
 
+  receiverFields.style.display =
+    "block";
 
-  let unit = "";
+  if (
+    method.id === "usdt"
+  ) {
+    normalReceiver.style.display =
+      "none";
 
-  if (method === "easypaisa") {
-    unit = "PKR";
+    usdtReceiver.style.display =
+      "block";
+  } else {
+    normalReceiver.style.display =
+      "block";
+
+    usdtReceiver.style.display =
+      "none";
   }
-
-  if (method === "jazzcash") {
-    unit = "PKR";
-  }
-
-  if (method === "usdt") {
-    unit = "USDT";
-  }
-
-
-  document.getElementById(
-    "rateText"
-  ).textContent =
-    `Rate: 1 INR = ${rate} ${unit}`;
-
 }
-
-
-// ==========================
-// CREATE ORDER
-// ==========================
 
 async function createOrder() {
 
-  const amount =
-    Number(
-      document.getElementById(
-        "amount"
-      ).value
-    );
-
+  errorBox.textContent = "";
 
   const method =
-    document.getElementById(
-      "receiveMethod"
-    ).value;
+    getMethod();
 
+  const amount =
+    Number(amountInput.value);
 
-  if (!amount || amount <= 0) {
-
-    showMessage(
-      "Please enter a valid amount."
-    );
+  if (!method) {
+    errorBox.textContent =
+      "Please select a receiving method.";
 
     return;
   }
 
-
-  let receiver = {};
-
-
   if (
-    method === "easypaisa" ||
-    method === "jazzcash"
+    !amount ||
+    amount <= 0
   ) {
+    errorBox.textContent =
+      "Please enter an amount.";
 
-    receiver = {
-
-      number:
-        document.getElementById(
-          "receiverNumber"
-        ).value.trim(),
-
-      name:
-        document.getElementById(
-          "receiverName"
-        ).value.trim()
-
-    };
-
-
-    if (!receiver.number) {
-
-      showMessage(
-        "Please enter the receiving account number."
-      );
-
-      return;
-    }
-
+    return;
   }
 
+  const body = {
+    amount,
+    receiveMethod:
+      method.id,
 
-  if (method === "usdt") {
+    receiverName:
+      document.getElementById(
+        "receiverName"
+      ).value,
 
-    receiver = {
+    receiverNumber:
+      document.getElementById(
+        "receiverNumber"
+      ).value,
 
-      wallet:
-        document.getElementById(
-          "receiverWallet"
-        ).value.trim(),
+    wallet:
+      document.getElementById(
+        "wallet"
+      ).value,
 
-      network:
-        document.getElementById(
-          "receiverNetwork"
-        ).value
-
-    };
-
-
-    if (!receiver.wallet) {
-
-      showMessage(
-        "Please enter your USDT wallet address."
-      );
-
-      return;
-    }
-
-  }
-
+    network:
+      document.getElementById(
+        "network"
+      ).value
+  };
 
   try {
 
@@ -588,153 +553,76 @@ async function createOrder() {
           },
 
           body:
-            JSON.stringify({
-              payMethod: "upi",
-              receiveMethod: method,
-              amount: amount,
-              receiver: receiver
-            })
+            JSON.stringify(body)
         }
       );
-
 
     const data =
       await response.json();
 
-
-    if (!response.ok) {
-
-      showMessage(
-        data.error ||
-        "Unable to create order."
+    if (!data.success) {
+      throw new Error(
+        data.message
       );
-
-      return;
     }
 
-
     window.location.href =
-      `/order?id=${encodeURIComponent(
+      "/order?id=" +
+      encodeURIComponent(
         data.order.id
-      )}`;
-
+      );
 
   } catch (error) {
 
-    showMessage(
-      "Connection error. Please try again."
-    );
-
+    errorBox.textContent =
+      error.message ||
+      "Unable to create order.";
   }
-
 }
 
+function formatNumber(value) {
 
-// ==========================
-// MESSAGE
-// ==========================
-
-function showMessage(text) {
-
-  const box =
-    document.getElementById(
-      "message"
+  return Number(value)
+    .toLocaleString(
+      undefined,
+      {
+        maximumFractionDigits: 8
+      }
     );
-
-  box.textContent = text;
-
-  box.classList.remove(
-    "hidden"
-  );
-
 }
 
+function escapeAttr(value) {
 
-// ==========================
-// EVENTS
-// ==========================
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
 
-document.getElementById(
-  "amount"
-).addEventListener(
+amountInput.addEventListener(
   "input",
   calculate
 );
 
-
-document.getElementById(
-  "receiveMethod"
-).addEventListener(
+methodSelect.addEventListener(
   "change",
-  updateReceiverFields
+  calculate
 );
 
+document
+  .getElementById("continueBtn")
+  .addEventListener(
+    "click",
+    createOrder
+  );
 
-document.getElementById(
-  "createOrder"
-).addEventListener(
-  "click",
-  createOrder
-);
+loadPublic().catch(error => {
 
-
-// ==========================
-// CONTACT
-// ==========================
-
-function setupContact() {
-
-  if (!config || !config.contact) {
-    return;
-  }
-
-
-  const box =
-    document.getElementById(
-      "contact"
-    );
-
-
-  let html = "";
-
-
-  if (config.contact.whatsapp) {
-
-    html += `
-      <a
-        href="${config.contact.whatsapp}"
-        target="_blank"
-        rel="noopener"
-      >
-        WhatsApp
-      </a>
-    `;
-
-  }
-
-
-  if (config.contact.telegram) {
-
-    html += `
-      <a
-        href="${config.contact.telegram}"
-        target="_blank"
-        rel="noopener"
-      >
-        Telegram
-      </a>
-    `;
-
-  }
-
-
-  box.innerHTML = html;
-
-}
-
-
-// Start
-loadConfig();
+  errorBox.textContent =
+    error.message ||
+    "Unable to load exchange.";
+});
 
 </script>
 
