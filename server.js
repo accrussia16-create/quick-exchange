@@ -1,4 +1,3 @@
-```js
 const express = require("express");
 const session = require("express-session");
 const fs = require("fs");
@@ -15,20 +14,22 @@ const SESSION_SECRET =
   process.env.SESSION_SECRET || "change-this-secret";
 
 
-// ==============================
+// ========================================
 // DATABASE
-// ==============================
+// ========================================
 
 function readDB() {
   try {
-    return JSON.parse(fs.readFileSync(DB_FILE, "utf8"));
+    return JSON.parse(
+      fs.readFileSync(DB_FILE, "utf8")
+    );
   } catch {
     return {
       settings: {
         siteName: "Quick Exchange",
 
         rates: {
-          easypaisa: 3.20,
+          easypaisa: 3.2,
           jazzcash: 3.18,
           usdt: 0.0115
         },
@@ -56,10 +57,14 @@ function readDB() {
   }
 }
 
+
 function writeDB(db) {
-  fs.mkdirSync(path.dirname(DB_FILE), {
-    recursive: true
-  });
+  fs.mkdirSync(
+    path.dirname(DB_FILE),
+    {
+      recursive: true
+    }
+  );
 
   fs.writeFileSync(
     DB_FILE,
@@ -68,27 +73,60 @@ function writeDB(db) {
 }
 
 
-// ==============================
+// ========================================
 // HELPERS
-// ==============================
+// ========================================
 
 function generateId(prefix) {
   return (
     prefix +
+    "-" +
+    Date.now().toString(36).toUpperCase() +
+    "-" +
     Math.random()
       .toString(36)
-      .substring(2, 8)
+      .substring(2, 7)
       .toUpperCase()
   );
 }
 
 
+function isValidPaymentURL(value) {
+
+  try {
+
+    const url =
+      new URL(value);
+
+    return (
+      url.protocol === "https:" ||
+      url.protocol === "upi:"
+    );
+
+  } catch {
+
+    return false;
+
+  }
+}
+
+
 function isUPIActive(upi) {
-  const now = Date.now();
+
+  if (!upi) {
+    return false;
+  }
 
   if (upi.enabled === false) {
     return false;
   }
+
+  if (upi.archivedAt) {
+    return false;
+  }
+
+  const now = Date.now();
+
 
   if (
     upi.startAt &&
@@ -97,6 +135,7 @@ function isUPIActive(upi) {
     return false;
   }
 
+
   if (
     upi.expiresAt &&
     new Date(upi.expiresAt).getTime() <= now
@@ -104,12 +143,17 @@ function isUPIActive(upi) {
     return false;
   }
 
+
   return true;
 }
 
 
 function adminOnly(req, res, next) {
-  if (req.session && req.session.admin) {
+
+  if (
+    req.session &&
+    req.session.admin === true
+  ) {
     return next();
   }
 
@@ -119,17 +163,22 @@ function adminOnly(req, res, next) {
 }
 
 
-// ==============================
+// ========================================
 // MIDDLEWARE
-// ==============================
+// ========================================
 
-app.use(express.json({
-  limit: "1mb"
-}));
+app.use(
+  express.json({
+    limit: "1mb"
+  })
+);
 
-app.use(express.urlencoded({
-  extended: true
-}));
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+);
+
 
 app.use(
   session({
@@ -142,245 +191,382 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      maxAge: 8 * 60 * 60 * 1000
+      maxAge:
+        8 * 60 * 60 * 1000
     }
   })
 );
 
 
-// ==============================
-// STATIC WEBSITE
-// ==============================
-
 app.use(
   express.static(
-    path.join(__dirname, "public")
+    path.join(
+      __dirname,
+      "public"
+    )
   )
 );
 
 
-// ==============================
-// PUBLIC SETTINGS
-// ==============================
+// ========================================
+// PUBLIC CONFIG
+// ========================================
 
-app.get("/api/public", (req, res) => {
-  const db = readDB();
+app.get(
+  "/api/public",
+  (req, res) => {
 
-  const activeUPI = (db.upiLinks || [])
-    .filter(isUPIActive)
-    .map(upi => ({
-      id: upi.id,
-      name: upi.name,
-      url: upi.url
-    }));
+    const db = readDB();
 
-  res.json({
-    siteName:
-      db.settings.siteName,
-
-    rates:
-      db.settings.rates,
-
-    feePercent:
-      Number(db.settings.feePercent || 0),
-
-    minAmount:
-      Number(db.settings.minAmount || 0),
-
-    maxAmount:
-      Number(db.settings.maxAmount || 0),
-
-    methods:
-      db.settings.methods || {},
-
-    contact:
-      db.settings.contact || {},
-
-    upiLinks:
-      activeUPI
-  });
-});
+    const activeUPI =
+      (db.upiLinks || [])
+        .filter(isUPIActive)
+        .map(upi => ({
+          id: upi.id,
+          name: upi.name,
+          url: upi.url
+        }));
 
 
-// ==============================
-// CREATE ORDER
-// ==============================
+    res.json({
 
-app.post("/api/orders", (req, res) => {
+      siteName:
+        db.settings.siteName,
 
-  const db = readDB();
+      rates:
+        db.settings.rates,
 
-  const {
-    payMethod,
-    receiveMethod,
-    amount,
-    receiver
-  } = req.body;
+      feePercent:
+        Number(
+          db.settings.feePercent || 0
+        ),
 
+      minAmount:
+        Number(
+          db.settings.minAmount || 0
+        ),
 
-  // Only UPI is currently supported
-  if (payMethod !== "upi") {
-    return res.status(400).json({
-      error: "Unsupported payment method"
+      maxAmount:
+        Number(
+          db.settings.maxAmount || 0
+        ),
+
+      methods:
+        db.settings.methods || {},
+
+      contact:
+        db.settings.contact || {},
+
+      upiLinks:
+        activeUPI
     });
+
   }
+);
 
 
-  // Allowed receiving methods
-  if (
-    ![
+// ========================================
+// CREATE ORDER
+// ========================================
+
+app.post(
+  "/api/orders",
+  (req, res) => {
+
+    const db = readDB();
+
+    const {
+      payMethod,
+      receiveMethod,
+      amount,
+      receiver
+    } = req.body;
+
+
+    if (payMethod !== "upi") {
+
+      return res.status(400).json({
+        error:
+          "UPI is currently the only payment method."
+      });
+
+    }
+
+
+    const allowedMethods = [
       "easypaisa",
       "jazzcash",
       "usdt"
-    ].includes(receiveMethod)
-  ) {
-    return res.status(400).json({
-      error: "Invalid receiving method"
-    });
-  }
+    ];
 
 
-  const sendAmount = Number(amount);
+    if (
+      !allowedMethods.includes(
+        receiveMethod
+      )
+    ) {
+
+      return res.status(400).json({
+        error:
+          "Invalid receiving method."
+      });
+
+    }
 
 
-  if (
-    !Number.isFinite(sendAmount) ||
-    sendAmount <= 0
-  ) {
-    return res.status(400).json({
-      error: "Invalid amount"
-    });
-  }
+    if (
+      db.settings.methods &&
+      db.settings.methods[
+        receiveMethod
+      ] === false
+    ) {
+
+      return res.status(400).json({
+        error:
+          "This receiving method is currently unavailable."
+      });
+
+    }
 
 
-  const settings =
-    db.settings;
+    const sendAmount =
+      Number(amount);
 
 
-  // Amount limits
-  if (
-    sendAmount <
-      Number(settings.minAmount || 0) ||
+    if (
+      !Number.isFinite(sendAmount) ||
+      sendAmount <= 0
+    ) {
 
-    sendAmount >
-      Number(settings.maxAmount || Infinity)
-  ) {
-    return res.status(400).json({
-      error:
-        "Amount is outside the allowed range"
-    });
-  }
+      return res.status(400).json({
+        error:
+          "Please enter a valid amount."
+      });
+
+    }
 
 
-  // Check receiving method enabled
-  if (
-    settings.methods &&
-    settings.methods[receiveMethod] === false
-  ) {
-    return res.status(400).json({
-      error:
-        "This receiving method is currently unavailable"
-    });
-  }
-
-
-  // Get current rate
-  const rate =
-    Number(
-      settings.rates[receiveMethod]
-    );
-
-
-  if (
-    !Number.isFinite(rate) ||
-    rate <= 0
-  ) {
-    return res.status(400).json({
-      error:
-        "Exchange rate is not configured"
-    });
-  }
-
-
-  // Fee
-  const feePercent =
-    Number(
-      settings.feePercent || 0
-    );
-
-
-  const grossReceive =
-    sendAmount * rate;
-
-
-  const feeAmount =
-    grossReceive *
-    (feePercent / 100);
-
-
-  const finalReceive =
-    grossReceive - feeAmount;
-
-
-  const order = {
-
-    id:
-      generateId("EX"),
-
-    createdAt:
-      new Date().toISOString(),
-
-    payMethod:
-      "upi",
-
-    receiveMethod:
-      receiveMethod,
-
-    sendAmount:
-      sendAmount,
-
-    // IMPORTANT:
-    // Rate is locked when order is created
-    rate:
-      rate,
-
-    feePercent:
-      feePercent,
-
-    receiveAmount:
+    const minAmount =
       Number(
-        finalReceive.toFixed(8)
-      ),
+        db.settings.minAmount || 0
+      );
 
-    receiver:
-      receiver || {},
-
-    paymentRef:
-      "",
-
-    status:
-      "pending",
-
-    note:
-      ""
-  };
+    const maxAmount =
+      Number(
+        db.settings.maxAmount || Infinity
+      );
 
 
-  db.orders.unshift(order);
+    if (
+      sendAmount < minAmount ||
+      sendAmount > maxAmount
+    ) {
 
-  writeDB(db);
+      return res.status(400).json({
+        error:
+          `Amount must be between ${minAmount} and ${maxAmount}.`
+      });
+
+    }
 
 
-  res.json({
-    ok: true,
-    order
-  });
-});
+    const rate =
+      Number(
+        db.settings.rates[
+          receiveMethod
+        ]
+      );
 
 
-// ==============================
-// GET ORDER
-// ==============================
+    if (
+      !Number.isFinite(rate) ||
+      rate <= 0
+    ) {
+
+      return res.status(400).json({
+        error:
+          "Exchange rate is not configured."
+      });
+
+    }
+
+
+    const feePercent =
+      Number(
+        db.settings.feePercent || 0
+      );
+
+
+    if (
+      !Number.isFinite(feePercent) ||
+      feePercent < 0 ||
+      feePercent > 100
+    ) {
+
+      return res.status(400).json({
+        error:
+          "Invalid service fee configuration."
+      });
+
+    }
+
+
+    // Calculate receive amount
+    const grossReceive =
+      sendAmount * rate;
+
+
+    const feeAmount =
+      grossReceive *
+      (feePercent / 100);
+
+
+    const finalReceive =
+      grossReceive - feeAmount;
+
+
+    // Basic receiver validation
+    if (
+      !receiver ||
+      typeof receiver !== "object"
+    ) {
+
+      return res.status(400).json({
+        error:
+          "Receiving details are required."
+      });
+
+    }
+
+
+    if (
+      receiveMethod === "easypaisa" ||
+      receiveMethod === "jazzcash"
+    ) {
+
+      if (
+        !String(
+          receiver.number || ""
+        ).trim()
+      ) {
+
+        return res.status(400).json({
+          error:
+            "Receiving account number is required."
+        });
+
+      }
+
+    }
+
+
+    if (
+      receiveMethod === "usdt"
+    ) {
+
+      if (
+        !String(
+          receiver.wallet || ""
+        ).trim()
+      ) {
+
+        return res.status(400).json({
+          error:
+            "USDT wallet address is required."
+        });
+
+      }
+
+
+      const networks = [
+        "TRC20",
+        "BEP20",
+        "ERC20"
+      ];
+
+
+      if (
+        !networks.includes(
+          receiver.network
+        )
+      ) {
+
+        return res.status(400).json({
+          error:
+            "Invalid USDT network."
+        });
+
+      }
+
+    }
+
+
+    const order = {
+
+      id:
+        generateId("EX"),
+
+      createdAt:
+        new Date().toISOString(),
+
+      updatedAt:
+        new Date().toISOString(),
+
+      payMethod:
+        "upi",
+
+      receiveMethod:
+        receiveMethod,
+
+      sendAmount:
+        sendAmount,
+
+      // LOCKED RATE
+      rate:
+        rate,
+
+      feePercent:
+        feePercent,
+
+      receiveAmount:
+        Number(
+          finalReceive.toFixed(8)
+        ),
+
+      receiver:
+        receiver,
+
+      paymentRef:
+        "",
+
+      selectedUpiId:
+        "",
+
+      status:
+        "pending",
+
+      note:
+        ""
+    };
+
+
+    db.orders.unshift(order);
+
+    writeDB(db);
+
+
+    return res.json({
+      ok: true,
+      order
+    });
+
+  }
+);
+
+
+// ========================================
+// PUBLIC ORDER
+// ========================================
 
 app.get(
   "/api/orders/:id",
@@ -391,38 +577,293 @@ app.get(
     const order =
       (db.orders || [])
         .find(
-          order =>
-            order.id ===
+          item =>
+            item.id ===
             req.params.id
         );
 
 
     if (!order) {
+
       return res.status(404).json({
-        error: "Order not found"
+        error:
+          "Order not found."
       });
+
     }
 
 
+    // Only expose information needed
+    // for the customer's order page.
+    const safeOrder = {
+
+      id:
+        order.id,
+
+      createdAt:
+        order.createdAt,
+
+      payMethod:
+        order.payMethod,
+
+      receiveMethod:
+        order.receiveMethod,
+
+      sendAmount:
+        order.sendAmount,
+
+      rate:
+        order.rate,
+
+      feePercent:
+        order.feePercent,
+
+      receiveAmount:
+        order.receiveAmount,
+
+      paymentRef:
+        order.paymentRef || "",
+
+      selectedUpiId:
+        order.selectedUpiId || "",
+
+      status:
+        order.status
+
+    };
+
+
     res.json({
-      order
+      order:
+        safeOrder
     });
+
   }
 );
 
 
-// ==============================
+// ========================================
+// CUSTOMER SUBMITS PAYMENT REFERENCE
+// ========================================
+
+app.put(
+  "/api/orders/:id",
+  (req, res) => {
+
+    const db = readDB();
+
+    const order =
+      (db.orders || [])
+        .find(
+          item =>
+            item.id ===
+            req.params.id
+        );
+
+
+    if (!order) {
+
+      return res.status(404).json({
+        error:
+          "Order not found."
+      });
+
+    }
+
+
+    const paymentRef =
+      String(
+        req.body.paymentRef || ""
+      ).trim();
+
+
+    if (!paymentRef) {
+
+      return res.status(400).json({
+        error:
+          "Payment reference is required."
+      });
+
+    }
+
+
+    if (paymentRef.length > 100) {
+
+      return res.status(400).json({
+        error:
+          "Payment reference is too long."
+      });
+
+    }
+
+
+    // Customer can ONLY change paymentRef here.
+    // They cannot change amount, rate,
+    // receive amount, or status.
+
+    order.paymentRef =
+      paymentRef;
+
+    order.updatedAt =
+      new Date().toISOString();
+
+
+    // Keep pending until admin verifies it.
+    if (
+      order.status === "pending"
+    ) {
+      order.status =
+        "processing";
+    }
+
+
+    writeDB(db);
+
+
+    const safeOrder = {
+
+      id:
+        order.id,
+
+      createdAt:
+        order.createdAt,
+
+      payMethod:
+        order.payMethod,
+
+      receiveMethod:
+        order.receiveMethod,
+
+      sendAmount:
+        order.sendAmount,
+
+      rate:
+        order.rate,
+
+      feePercent:
+        order.feePercent,
+
+      receiveAmount:
+        order.receiveAmount,
+
+      paymentRef:
+        order.paymentRef,
+
+      selectedUpiId:
+        order.selectedUpiId,
+
+      status:
+        order.status
+
+    };
+
+
+    res.json({
+      ok: true,
+      order:
+        safeOrder
+    });
+
+  }
+);
+
+
+// ========================================
+// CUSTOMER SELECTS UPI
+// ========================================
+
+app.post(
+  "/api/orders/:id/select-upi",
+  (req, res) => {
+
+    const db = readDB();
+
+    const order =
+      db.orders.find(
+        item =>
+          item.id ===
+          req.params.id
+      );
+
+
+    if (!order) {
+
+      return res.status(404).json({
+        error:
+          "Order not found."
+      });
+
+    }
+
+
+    const upiId =
+      String(
+        req.body.upiId || ""
+      );
+
+
+    const upi =
+      db.upiLinks.find(
+        item =>
+          item.id === upiId
+      );
+
+
+    if (!upi) {
+
+      return res.status(404).json({
+        error:
+          "UPI option not found."
+      });
+
+    }
+
+
+    if (!isUPIActive(upi)) {
+
+      return res.status(400).json({
+        error:
+          "This UPI option is no longer active."
+      });
+
+    }
+
+
+    order.selectedUpiId =
+      upi.id;
+
+    order.updatedAt =
+      new Date().toISOString();
+
+
+    writeDB(db);
+
+
+    res.json({
+      ok: true
+    });
+
+  }
+);
+
+
+// ========================================
 // ADMIN LOGIN
-// ==============================
+// ========================================
 
 app.post(
   "/api/admin/login",
   (req, res) => {
 
-    const {
-      username,
-      password
-    } = req.body;
+    const username =
+      String(
+        req.body.username || ""
+      );
+
+    const password =
+      String(
+        req.body.password || ""
+      );
 
 
     if (
@@ -430,44 +871,52 @@ app.post(
       password === ADMIN_PASS
     ) {
 
-      req.session.admin = true;
+      req.session.admin =
+        true;
+
 
       return res.json({
         ok: true
       });
+
     }
 
 
-    res.status(401).json({
-      error: "Invalid username or password"
+    return res.status(401).json({
+      error:
+        "Invalid username or password."
     });
+
   }
 );
 
 
-// ==============================
+// ========================================
 // ADMIN LOGOUT
-// ==============================
+// ========================================
 
 app.post(
   "/api/admin/logout",
   adminOnly,
   (req, res) => {
 
-    req.session.destroy(() => {
+    req.session.destroy(
+      () => {
 
-      res.json({
-        ok: true
-      });
+        res.json({
+          ok: true
+        });
 
-    });
+      }
+    );
+
   }
 );
 
 
-// ==============================
+// ========================================
 // ADMIN DATA
-// ==============================
+// ========================================
 
 app.get(
   "/api/admin/data",
@@ -476,14 +925,21 @@ app.get(
 
     const db = readDB();
 
+    res.set(
+      "Cache-Control",
+      "no-store"
+    );
+
+
     res.json(db);
+
   }
 );
 
 
-// ==============================
-// UPDATE SETTINGS
-// ==============================
+// ========================================
+// ADMIN SETTINGS
+// ========================================
 
 app.put(
   "/api/admin/settings",
@@ -492,51 +948,147 @@ app.put(
 
     const db = readDB();
 
-    const body = req.body;
+    const body =
+      req.body;
+
+
+    const easypaisaRate =
+      Number(
+        body.rates?.easypaisa
+      );
+
+    const jazzcashRate =
+      Number(
+        body.rates?.jazzcash
+      );
+
+    const usdtRate =
+      Number(
+        body.rates?.usdt
+      );
+
+
+    if (
+      !Number.isFinite(
+        easypaisaRate
+      ) ||
+      easypaisaRate <= 0 ||
+
+      !Number.isFinite(
+        jazzcashRate
+      ) ||
+      jazzcashRate <= 0 ||
+
+      !Number.isFinite(
+        usdtRate
+      ) ||
+      usdtRate <= 0
+    ) {
+
+      return res.status(400).json({
+        error:
+          "All exchange rates must be greater than zero."
+      });
+
+    }
+
+
+    const feePercent =
+      Number(
+        body.feePercent ?? 0
+      );
+
+
+    const minAmount =
+      Number(
+        body.minAmount
+      );
+
+
+    const maxAmount =
+      Number(
+        body.maxAmount
+      );
+
+
+    if (
+      !Number.isFinite(
+        feePercent
+      ) ||
+      feePercent < 0 ||
+      feePercent > 100
+    ) {
+
+      return res.status(400).json({
+        error:
+          "Invalid fee percentage."
+      });
+
+    }
+
+
+    if (
+      !Number.isFinite(
+        minAmount
+      ) ||
+      minAmount < 0
+    ) {
+
+      return res.status(400).json({
+        error:
+          "Invalid minimum amount."
+      });
+
+    }
+
+
+    if (
+      !Number.isFinite(
+        maxAmount
+      ) ||
+      maxAmount <= 0 ||
+      maxAmount < minAmount
+    ) {
+
+      return res.status(400).json({
+        error:
+          "Invalid maximum amount."
+      });
+
+    }
 
 
     db.settings.siteName =
       String(
         body.siteName ||
-        db.settings.siteName
-      );
+        "Quick Exchange"
+      ).trim();
 
 
     db.settings.rates = {
 
       easypaisa:
-        Number(
-          body.rates?.easypaisa
-        ),
+        easypaisaRate,
 
       jazzcash:
-        Number(
-          body.rates?.jazzcash
-        ),
+        jazzcashRate,
 
       usdt:
-        Number(
-          body.rates?.usdt
-        )
+        usdtRate
+
     };
 
 
     db.settings.feePercent =
-      Number(
-        body.feePercent || 0
-      );
+      feePercent;
 
 
     db.settings.minAmount =
-      Number(
-        body.minAmount || 0
-      );
+      minAmount;
 
 
     db.settings.maxAmount =
-      Number(
-        body.maxAmount || 0
-      );
+      maxAmount;
 
 
     db.settings.methods = {
@@ -555,6 +1107,7 @@ app.put(
         Boolean(
           body.methods?.usdt
         )
+
     };
 
 
@@ -563,12 +1116,13 @@ app.put(
       whatsapp:
         String(
           body.contact?.whatsapp || ""
-        ),
+        ).trim(),
 
       telegram:
         String(
           body.contact?.telegram || ""
-        )
+        ).trim()
+
     };
 
 
@@ -580,13 +1134,14 @@ app.put(
       settings:
         db.settings
     });
+
   }
 );
 
 
-// ==============================
-// ADD UPI
-// ==============================
+// ========================================
+// ADD UPI LINK
+// ========================================
 
 app.post(
   "/api/admin/upi",
@@ -595,20 +1150,46 @@ app.post(
 
     const db = readDB();
 
-    const {
-      name,
-      url,
-      startAt,
-      expiresAt
-    } = req.body;
+    const name =
+      String(
+        req.body.name || ""
+      ).trim();
+
+    const url =
+      String(
+        req.body.url || ""
+      ).trim();
 
 
-    if (!name || !url) {
+    if (!name) {
 
       return res.status(400).json({
         error:
-          "UPI name and payment URL are required"
+          "UPI button name is required."
       });
+
+    }
+
+
+    if (!url) {
+
+      return res.status(400).json({
+        error:
+          "UPI payment URL is required."
+      });
+
+    }
+
+
+    if (
+      !isValidPaymentURL(url)
+    ) {
+
+      return res.status(400).json({
+        error:
+          "Payment URL must use HTTPS or a UPI payment link."
+      });
+
     }
 
 
@@ -618,22 +1199,28 @@ app.post(
         generateId("UPI"),
 
       name:
-        String(name),
+        name,
 
       url:
-        String(url),
+        url,
 
       startAt:
-        startAt || null,
+        req.body.startAt ||
+        null,
 
       expiresAt:
-        expiresAt || null,
+        req.body.expiresAt ||
+        null,
 
       enabled:
         true,
 
+      archivedAt:
+        null,
+
       createdAt:
         new Date().toISOString()
+
     };
 
 
@@ -646,13 +1233,14 @@ app.post(
       ok: true,
       upi
     });
+
   }
 );
 
 
-// ==============================
+// ========================================
 // UPDATE UPI
-// ==============================
+// ========================================
 
 app.put(
   "/api/admin/upi/:id",
@@ -673,50 +1261,97 @@ app.put(
 
       return res.status(404).json({
         error:
-          "UPI link not found"
+          "UPI link not found."
       });
+
     }
 
 
     if (
       req.body.name !== undefined
     ) {
+
+      const name =
+        String(
+          req.body.name
+        ).trim();
+
+
+      if (!name) {
+
+        return res.status(400).json({
+          error:
+            "UPI name cannot be empty."
+        });
+
+      }
+
+
       upi.name =
-        String(req.body.name);
+        name;
+
     }
 
 
     if (
       req.body.url !== undefined
     ) {
+
+      const url =
+        String(
+          req.body.url
+        ).trim();
+
+
+      if (
+        !isValidPaymentURL(url)
+      ) {
+
+        return res.status(400).json({
+          error:
+            "Invalid payment URL."
+        });
+
+      }
+
+
       upi.url =
-        String(req.body.url);
+        url;
+
     }
 
 
     if (
       req.body.startAt !== undefined
     ) {
+
       upi.startAt =
         req.body.startAt ||
         null;
+
     }
 
 
     if (
       req.body.expiresAt !== undefined
     ) {
+
       upi.expiresAt =
         req.body.expiresAt ||
         null;
+
     }
 
 
     if (
       req.body.enabled !== undefined
     ) {
+
       upi.enabled =
-        Boolean(req.body.enabled);
+        Boolean(
+          req.body.enabled
+        );
+
     }
 
 
@@ -727,13 +1362,14 @@ app.put(
       ok: true,
       upi
     });
+
   }
 );
 
 
-// ==============================
-// DELETE UPI
-// ==============================
+// ========================================
+// ARCHIVE UPI
+// ========================================
 
 app.delete(
   "/api/admin/upi/:id",
@@ -742,12 +1378,30 @@ app.delete(
 
     const db = readDB();
 
-    db.upiLinks =
-      db.upiLinks.filter(
-        upi =>
-          upi.id !==
+    const upi =
+      db.upiLinks.find(
+        item =>
+          item.id ===
           req.params.id
       );
+
+
+    if (!upi) {
+
+      return res.status(404).json({
+        error:
+          "UPI link not found."
+      });
+
+    }
+
+
+    // Archive instead of deleting history
+    upi.enabled =
+      false;
+
+    upi.archivedAt =
+      new Date().toISOString();
 
 
     writeDB(db);
@@ -756,13 +1410,14 @@ app.delete(
     res.json({
       ok: true
     });
+
   }
 );
 
 
-// ==============================
-// UPDATE ORDER
-// ==============================
+// ========================================
+// ADMIN UPDATE ORDER
+// ========================================
 
 app.put(
   "/api/admin/orders/:id",
@@ -783,39 +1438,70 @@ app.put(
 
       return res.status(404).json({
         error:
-          "Order not found"
+          "Order not found."
       });
+
     }
 
 
+    const allowedStatuses = [
+      "pending",
+      "processing",
+      "completed",
+      "rejected"
+    ];
+
+
     if (
-      req.body.status
+      req.body.status !== undefined
     ) {
+
+      if (
+        !allowedStatuses.includes(
+          req.body.status
+        )
+      ) {
+
+        return res.status(400).json({
+          error:
+            "Invalid order status."
+        });
+
+      }
+
+
       order.status =
-        String(req.body.status);
+        req.body.status;
+
     }
 
 
     if (
-      req.body.paymentRef !==
-      undefined
+      req.body.paymentRef !== undefined
     ) {
+
       order.paymentRef =
         String(
           req.body.paymentRef
-        );
+        ).trim();
+
     }
 
 
     if (
-      req.body.note !==
-      undefined
+      req.body.note !== undefined
     ) {
+
       order.note =
         String(
           req.body.note
-        );
+        ).trim();
+
     }
+
+
+    order.updatedAt =
+      new Date().toISOString();
 
 
     writeDB(db);
@@ -825,13 +1511,14 @@ app.put(
       ok: true,
       order
     });
+
   }
 );
 
 
-// ==============================
-// ADMIN PAGE
-// ==============================
+// ========================================
+// PAGES
+// ========================================
 
 app.get(
   "/admin",
@@ -844,13 +1531,10 @@ app.get(
         "admin.html"
       )
     );
+
   }
 );
 
-
-// ==============================
-// ORDER PAGE
-// ==============================
 
 app.get(
   "/order",
@@ -863,13 +1547,10 @@ app.get(
         "order.html"
       )
     );
+
   }
 );
 
-
-// ==============================
-// STATUS PAGE
-// ==============================
 
 app.get(
   "/status",
@@ -882,22 +1563,22 @@ app.get(
         "status.html"
       )
     );
+
   }
 );
 
 
-// ==============================
-// START SERVER
-// ==============================
+// ========================================
+// START
+// ========================================
 
 app.listen(
   PORT,
   () => {
 
     console.log(
-      `Exchange site running on port ${PORT}`
+      `Quick Exchange running on port ${PORT}`
     );
 
   }
 );
-```
