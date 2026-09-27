@@ -1,24 +1,52 @@
 {
   "settings": {
     "siteName": "Quick Exchange",
-    "rates": {
-      "easypaisa": 3.2,
-      "jazzcash": 3.18,
-      "usdt": 0.0115
-    },
     "feePercent": 0,
     "minAmount": 100,
     "maxAmount": 100000,
-    "methods": {
-      "easypaisa": true,
-      "jazzcash": true,
-      "usdt": true
-    },
     "contact": {
       "whatsapp": "",
       "telegram": ""
     }
   },
+  "paymentMethods": [
+    {
+      "id": "easypaisa",
+      "name": "EasyPaisa",
+      "description": "Receive through EasyPaisa",
+      "rate": 3.2,
+      "flag": "🇵🇰",
+      "logo": "",
+      "enabled": true,
+      "archived": false,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "jazzcash",
+      "name": "JazzCash",
+      "description": "Receive through JazzCash",
+      "rate": 3.18,
+      "flag": "🇵🇰",
+      "logo": "",
+      "enabled": true,
+      "archived": false,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "usdt",
+      "name": "USDT",
+      "description": "Receive USDT cryptocurrency",
+      "rate": 0.0115,
+      "flag": "🌐",
+      "logo": "",
+      "enabled": true,
+      "archived": false,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    }
+  ],
   "upiLinks": [],
   "orders": []
 }
