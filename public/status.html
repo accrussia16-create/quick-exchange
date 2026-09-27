@@ -1,452 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Order Status - Quick Exchange</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<title>Quick Exchange - Status</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      color: #172033;
-    }
+<style>
 
-    .header {
-      background: #111827;
-      color: white;
-      text-align: center;
-      padding: 22px;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    .header h1 {
-      margin: 0;
-    }
+body {
+  margin: 0;
+  background: #07111f;
+  color: white;
+  font-family: Arial, sans-serif;
+}
 
-    .container {
-      width: 92%;
-      max-width: 600px;
-      margin: 30px auto;
-    }
+.container {
+  width: min(700px, 94%);
+  margin: auto;
+}
 
-    .card {
-      background: white;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 5px 25px rgba(0,0,0,.08);
-      margin-bottom: 20px;
-    }
+.card {
+  margin-top: 60px;
+  background: #0d1b2e;
+  border: 1px solid #1c3753;
+  border-radius: 22px;
+  padding: 25px;
+}
 
-    .order-id {
-      padding: 13px;
-      background: #eef2ff;
-      border-radius: 8px;
-      font-weight: bold;
-      word-break: break-all;
-    }
+.logo {
+  font-size: 25px;
+  font-weight: 800;
+  margin-bottom: 30px;
+}
 
-    .row {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 13px 0;
-      border-bottom: 1px solid #eee;
-    }
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #20364c;
+}
 
-    .row:last-child {
-      border-bottom: 0;
-    }
+.label {
+  color: #91a4ba;
+}
 
-    .label {
-      color: #6b7280;
-    }
+.status {
+  text-transform: uppercase;
+  color: #2dd4bf;
+  font-weight: 800;
+}
 
-    .value {
-      font-weight: bold;
-      text-align: right;
-    }
+a {
+  color: #2dd4bf;
+}
 
-    .status {
-      margin-top: 20px;
-      padding: 16px;
-      text-align: center;
-      border-radius: 10px;
-      background: #f3f4f6;
-      font-size: 20px;
-      font-weight: bold;
-    }
+</style>
 
-    .pending {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .processing {
-      background: #dbeafe;
-      color: #1e40af;
-    }
-
-    .completed {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .rejected {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .button {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      margin-top: 20px;
-      border: 0;
-      border-radius: 9px;
-      background: #111827;
-      color: white;
-      font-size: 16px;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .error {
-      color: #b91c1c;
-      text-align: center;
-    }
-
-    .small {
-      color: #6b7280;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-  </style>
 </head>
 
 <body>
 
-  <div class="header">
-    <h1>Quick Exchange</h1>
-    <p>Order Status</p>
-  </div>
+<div class="container">
 
-  <div class="container">
+<div class="card">
 
-    <div class="card">
+<div class="logo">
+⚡ Quick Exchange
+</div>
 
-      <h2>Your Order</h2>
+<div class="row">
+<span class="label">Order ID</span>
+<strong id="id">—</strong>
+</div>
 
-      <div
-        class="order-id"
-        id="orderId"
-      >
-        Loading...
-      </div>
+<div class="row">
+<span class="label">Amount Sent</span>
+<strong id="amount">—</strong>
+</div>
 
-      <div
-        id="status"
-        class="status"
-      >
-        Loading...
-      </div>
+<div class="row">
+<span class="label">Receive Method</span>
+<strong id="method">—</strong>
+</div>
 
-    </div>
+<div class="row">
+<span class="label">Locked Rate</span>
+<strong id="rate">—</strong>
+</div>
 
+<div class="row">
+<span class="label">Receive Amount</span>
+<strong id="receive">—</strong>
+</div>
 
-    <div
-      class="card"
-      id="details"
-    >
+<div class="row">
+<span class="label">Payment Reference</span>
+<strong id="reference">—</strong>
+</div>
 
-      <h2>Order Details</h2>
+<div class="row">
+<span class="label">Status</span>
+<strong id="status" class="status">—</strong>
+</div>
 
-      <div class="row">
-        <span class="label">
-          You Send
-        </span>
+<br>
 
-        <span
-          class="value"
-          id="sendAmount"
-        >
-          -
-        </span>
-      </div>
+<a href="/">
+← Back to Exchange
+</a>
 
+</div>
 
-      <div class="row">
-        <span class="label">
-          Receive Method
-        </span>
-
-        <span
-          class="value"
-          id="receiveMethod"
-        >
-          -
-        </span>
-      </div>
-
-
-      <div class="row">
-        <span class="label">
-          Exchange Rate
-        </span>
-
-        <span
-          class="value"
-          id="rate"
-        >
-          -
-        </span>
-      </div>
-
-
-      <div class="row">
-        <span class="label">
-          You Receive
-        </span>
-
-        <span
-          class="value"
-          id="receiveAmount"
-        >
-          -
-        </span>
-      </div>
-
-
-      <div class="row">
-        <span class="label">
-          Payment Reference
-        </span>
-
-        <span
-          class="value"
-          id="paymentRef"
-        >
-          Not submitted
-        </span>
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <h3>What happens next?</h3>
-
-      <p class="small">
-        Your payment is manually reviewed by our
-        team. Once the payment is verified, your
-        order will be processed.
-      </p>
-
-      <a
-        href="/"
-        class="button"
-      >
-        Back to Exchange
-      </a>
-
-    </div>
-
-
-    <div
-      id="error"
-      class="error"
-    ></div>
-
-  </div>
-
+</div>
 
 <script>
 
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
+const id =
+new URLSearchParams(
+window.location.search
+).get("id");
 
-const orderId =
-  params.get("id");
+async function load() {
 
+if (!id) return;
 
-function formatMethod(method) {
+const response =
+await fetch(
+"/api/orders/" +
+encodeURIComponent(id)
+);
 
-  const names = {
+const data =
+await response.json();
 
-    easypaisa: "EasyPaisa",
+if (!data.success) {
+document.body.innerHTML =
+"<h2 style='padding:30px'>Order not found.</h2>";
+return;
+}
 
-    jazzcash: "JazzCash",
+const order =
+data.order;
 
-    usdt: "USDT"
+document.getElementById(
+"id"
+).textContent =
+order.id;
 
-  };
+document.getElementById(
+"amount"
+).textContent =
+format(order.amount);
 
+document.getElementById(
+"method"
+).textContent =
+order.paymentMethodName ||
+order.paymentMethod;
 
-  return (
-    names[method] ||
-    method
-  );
+document.getElementById(
+"rate"
+).textContent =
+order.rate;
+
+document.getElementById(
+"receive"
+).textContent =
+format(order.receiveAmount);
+
+document.getElementById(
+"reference"
+).textContent =
+order.paymentReference ||
+"Not submitted";
+
+document.getElementById(
+"status"
+).textContent =
+order.status;
 
 }
 
+function format(value) {
 
-function formatStatus(status) {
-
-  const names = {
-
-    pending: "Pending",
-
-    processing: "Processing",
-
-    completed: "Completed",
-
-    rejected: "Rejected"
-
-  };
-
-
-  return (
-    names[status] ||
-    status
-  );
+return Number(value)
+.toLocaleString(
+undefined,
+{
+maximumFractionDigits: 8
+}
+);
 
 }
 
+load();
 
-async function loadStatus() {
-
-  if (!orderId) {
-
-    document.getElementById(
-      "error"
-    ).textContent =
-      "No order ID was provided.";
-
-    return;
-  }
-
-
-  try {
-
-    const response =
-      await fetch(
-        `/api/orders/${encodeURIComponent(orderId)}`
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if (!response.ok) {
-
-      document.getElementById(
-        "error"
-      ).textContent =
-        data.error ||
-        "Order not found.";
-
-      return;
-    }
-
-
-    const order =
-      data.order;
-
-
-    document.getElementById(
-      "orderId"
-    ).textContent =
-      order.id;
-
-
-    document.getElementById(
-      "sendAmount"
-    ).textContent =
-      `${order.sendAmount} INR`;
-
-
-    document.getElementById(
-      "receiveMethod"
-    ).textContent =
-      formatMethod(
-        order.receiveMethod
-      );
-
-
-    let unit = "PKR";
-
-
-    if (
-      order.receiveMethod ===
-      "usdt"
-    ) {
-
-      unit = "USDT";
-
-    }
-
-
-    document.getElementById(
-      "rate"
-    ).textContent =
-      `1 INR = ${order.rate} ${unit}`;
-
-
-    document.getElementById(
-      "receiveAmount"
-    ).textContent =
-      `${order.receiveAmount} ${unit}`;
-
-
-    document.getElementById(
-      "paymentRef"
-    ).textContent =
-      order.paymentRef ||
-      "Not submitted";
-
-
-    const statusBox =
-      document.getElementById(
-        "status"
-      );
-
-
-    statusBox.textContent =
-      formatStatus(
-        order.status
-      );
-
-
-    statusBox.className =
-      "status " +
-      order.status;
-
-
-  } catch {
-
-    document.getElementById(
-      "error"
-    ).textContent =
-      "Unable to connect to the server.";
-
-  }
-
-}
-
-
-loadStatus();
+setInterval(
+load,
+10000
+);
 
 </script>
 
 </body>
+
 </html>
