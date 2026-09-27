@@ -1,1252 +1,1753 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quick Exchange - Admin</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #222;
-    }
+<title>Quick Exchange Admin</title>
 
-    header {
-      background: #111827;
-      color: white;
-      padding: 18px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+<style>
 
-    header h1 {
-      margin: 0;
-      font-size: 22px;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    .container {
-      max-width: 1200px;
-      margin: 25px auto;
-      padding: 0 15px;
-    }
+body {
+  margin: 0;
+  background: #07111f;
+  color: white;
+  font-family: Arial, sans-serif;
+}
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-    }
+.container {
+  width: min(1200px, 94%);
+  margin: auto;
+}
 
-    h2 {
-      margin-top: 0;
-      font-size: 20px;
-    }
+header {
+  padding: 25px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    h3 {
-      margin-bottom: 10px;
-    }
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+}
 
-    label {
-      display: block;
-      font-weight: bold;
-      margin: 12px 0 6px;
-    }
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-weight: 700;
+}
 
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid #d1d5db;
-      border-radius: 7px;
-      font-size: 14px;
-    }
+.primary {
+  background: #17bfae;
+  color: #031018;
+}
 
-    textarea {
-      min-height: 70px;
-      resize: vertical;
-    }
+.danger {
+  background: #d84f5f;
+  color: white;
+}
 
-    button {
-      border: 0;
-      border-radius: 7px;
-      padding: 10px 15px;
-      cursor: pointer;
-      font-weight: bold;
-      background: #2563eb;
-      color: white;
-    }
+.secondary {
+  background: #20384f;
+  color: white;
+}
 
-    button:hover {
-      opacity: 0.9;
-    }
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 13px;
+  margin-top: 7px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  border: 1px solid #29445e;
+  background: #071525;
+  color: white;
+}
 
-    .danger {
-      background: #dc2626;
-    }
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
 
-    .secondary {
-      background: #6b7280;
-    }
+label {
+  color: #9badc1;
+  font-size: 13px;
+}
 
-    .success {
-      background: #16a34a;
-    }
+.card {
+  background: #0d1b2e;
+  border: 1px solid #1c3854;
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
+.grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-    }
+.hidden {
+  display: none !important;
+}
 
-    .checkbox {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 15px;
-    }
+.login {
+  max-width: 400px;
+  margin: 100px auto;
+}
 
-    .checkbox input {
-      width: auto;
-    }
+.method-card,
+.upi-card,
+.order-card {
+  background: #071525;
+  border: 1px solid #203b55;
+  border-radius: 15px;
+  padding: 16px;
+  margin-top: 12px;
+}
 
-    .login-box {
-      max-width: 420px;
-      margin: 80px auto;
-    }
+.method-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-    .hidden {
-      display: none !important;
-    }
+.method-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: contain;
+  background: white;
+  padding: 5px;
+}
 
-    .message {
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 7px;
-      background: #eef2ff;
-    }
+.flag {
+  font-size: 28px;
+}
 
-    .upi-card,
-    .order-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 12px;
-    }
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
 
-    .upi-card strong,
-    .order-card strong {
-      color: #111827;
-    }
+.message {
+  margin: 10px 0;
+  color: #2dd4bf;
+}
 
-    .status {
-      display: inline-block;
-      padding: 4px 9px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-      background: #e5e7eb;
-    }
+.error {
+  color: #ff7676;
+}
 
-    .status-active {
-      background: #dcfce7;
-      color: #166534;
-    }
+.preview {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: white;
+  padding: 5px;
+  display: none;
+}
 
-    .status-expired {
-      background: #fee2e2;
-      color: #991b1b;
-    }
+.countdown {
+  color: #2dd4bf;
+  font-weight: 800;
+}
 
-    .status-disabled {
-      background: #e5e7eb;
-      color: #374151;
-    }
+.status {
+  color: #2dd4bf;
+  font-weight: 700;
+}
 
-    .status-scheduled {
-      background: #fef3c7;
-      color: #92400e;
-    }
+</style>
 
-    .status-processing {
-      background: #dbeafe;
-      color: #1e40af;
-    }
-
-    .status-completed {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .status-rejected {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .order-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .small {
-      color: #6b7280;
-      font-size: 13px;
-    }
-
-    .top-buttons {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width: 700px) {
-      .grid,
-      .grid-3,
-      .order-grid {
-        grid-template-columns: 1fr;
-      }
-
-      header {
-        flex-direction: column;
-        gap: 12px;
-      }
-    }
-  </style>
 </head>
 
 <body>
 
-<header>
-  <h1>Quick Exchange — Admin Panel</h1>
+<div id="loginScreen" class="container">
 
-  <div class="top-buttons">
-    <button class="secondary" onclick="loadDashboard()">Refresh</button>
-    <button class="danger" onclick="logout()">Logout</button>
-  </div>
-</header>
+<div class="login card">
 
-<!-- LOGIN -->
-<div id="loginSection" class="container">
-  <div class="card login-box">
-    <h2>Admin Login</h2>
+<h1>⚡ Quick Exchange</h1>
 
-    <label>Username</label>
-    <input id="username" type="text" placeholder="Admin username">
+<h3>Admin Login</h3>
 
-    <label>Password</label>
-    <input id="password" type="password" placeholder="Admin password">
+<label>Username</label>
 
-    <br><br>
+<input id="loginUser">
 
-    <button onclick="login()">Login</button>
+<label>Password</label>
 
-    <div id="loginMessage" class="message hidden"></div>
-  </div>
+<input
+id="loginPass"
+type="password"
+>
+
+<div id="loginError" class="error"></div>
+
+<button
+class="primary"
+style="width:100%"
+id="loginBtn"
+>
+Login
+</button>
+
+</div>
+
 </div>
 
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="container hidden">
+<div id="adminScreen" class="container hidden">
 
-  <!-- SETTINGS -->
-  <div class="card">
-    <h2>Exchange Settings</h2>
+<header>
 
-    <div class="grid">
+<div class="logo">
+⚡ Quick Exchange Admin
+</div>
 
-      <div>
-        <label>Site Name</label>
-        <input id="siteName">
-      </div>
+<button
+class="secondary"
+id="logoutBtn"
+>
+Logout
+</button>
 
-      <div>
-        <label>Fee Percentage</label>
-        <input id="feePercent" type="number" step="0.01">
-      </div>
-
-      <div>
-        <label>Minimum Amount</label>
-        <input id="minAmount" type="number" step="0.01">
-      </div>
-
-      <div>
-        <label>Maximum Amount</label>
-        <input id="maxAmount" type="number" step="0.01">
-      </div>
-
-    </div>
-
-    <h3>Exchange Rates</h3>
-
-    <div class="grid-3">
-
-      <div>
-        <label>EasyPaisa Rate</label>
-        <input id="rateEasypaisa" type="number" step="0.000001">
-      </div>
-
-      <div>
-        <label>JazzCash Rate</label>
-        <input id="rateJazzcash" type="number" step="0.000001">
-      </div>
-
-      <div>
-        <label>USDT Rate</label>
-        <input id="rateUsdt" type="number" step="0.000001">
-      </div>
-
-    </div>
-
-    <h3>Receive Methods</h3>
-
-    <div class="checkbox">
-      <input id="methodEasypaisa" type="checkbox">
-      <label for="methodEasypaisa">EasyPaisa</label>
-    </div>
-
-    <div class="checkbox">
-      <input id="methodJazzcash" type="checkbox">
-      <label for="methodJazzcash">JazzCash</label>
-    </div>
-
-    <div class="checkbox">
-      <input id="methodUsdt" type="checkbox">
-      <label for="methodUsdt">USDT</label>
-    </div>
-
-    <h3>Contact Details</h3>
-
-    <div class="grid">
-
-      <div>
-        <label>WhatsApp Link</label>
-        <input id="whatsapp" placeholder="https://wa.me/...">
-      </div>
-
-      <div>
-        <label>Telegram Link</label>
-        <input id="telegram" placeholder="https://t.me/...">
-      </div>
-
-    </div>
-
-    <br>
-
-    <button class="success" onclick="saveSettings()">
-      Save Settings
-    </button>
-
-    <div id="settingsMessage" class="message hidden"></div>
-  </div>
+</header>
 
 
-  <!-- UPI -->
-  <div class="card">
-    <h2>UPI Payment Links</h2>
+<!-- SETTINGS -->
 
-    <p class="small">
-      Add multiple UPI payment links. Expired links remain in history and automatically disappear from the customer page.
-    </p>
+<div class="card">
 
-    <div class="grid">
+<h2>Exchange Settings</h2>
 
-      <div>
-        <label>UPI Name / Label</label>
-        <input id="upiName" placeholder="Example: Main UPI">
-      </div>
+<div class="grid">
 
-      <div>
-        <label>UPI URL</label>
-        <input id="upiUrl" placeholder="upi://pay?...">
-      </div>
+<div>
+<label>Site Name</label>
+<input id="siteName">
+</div>
 
-      <div>
-        <label>Start Date & Time</label>
-        <input id="upiStart" type="datetime-local">
-      </div>
+<div>
+<label>Fee %</label>
+<input id="fee" type="number" step="0.01">
+</div>
 
-      <div>
-        <label>Expiry Date & Time</label>
-        <input id="upiExpiry" type="datetime-local">
-      </div>
+<div>
+<label>Minimum Amount</label>
+<input id="minAmount" type="number">
+</div>
 
-    </div>
+<div>
+<label>Maximum Amount</label>
+<input id="maxAmount" type="number">
+</div>
 
-    <br>
+</div>
 
-    <button onclick="addUpi()">Add UPI Link</button>
+<h3>Support</h3>
 
-    <div id="upiMessage" class="message hidden"></div>
+<div class="grid">
 
-    <h3>UPI History</h3>
+<div>
+<label>WhatsApp URL</label>
+<input id="whatsapp">
+</div>
 
-    <div id="upiList"></div>
-  </div>
+<div>
+<label>Telegram URL</label>
+<input id="telegram">
+</div>
+
+</div>
+
+<button
+class="primary"
+id="saveSettings"
+>
+Save Settings
+</button>
+
+<div id="settingsMessage" class="message"></div>
+
+</div>
 
 
-  <!-- ORDERS -->
-  <div class="card">
-    <h2>Orders</h2>
+<!-- PAYMENT METHODS -->
 
-    <div id="ordersList"></div>
-  </div>
+<div class="card">
+
+<h2>Payment Methods</h2>
+
+<p style="color:#8fa2b7">
+Add or customize the methods customers can use
+under "Receive With".
+</p>
+
+<div id="paymentMethods"></div>
+
+<hr style="border-color:#20364b;margin:25px 0">
+
+
+<h3>Add Payment Method</h3>
+
+<div class="grid">
+
+<div>
+<label>Method Name</label>
+<input
+id="pmName"
+placeholder="Example: PayPal"
+>
+</div>
+
+<div>
+<label>Country Flag / Icon</label>
+<input
+id="pmFlag"
+placeholder="🇺🇸"
+>
+</div>
+
+<div>
+<label>Exchange Rate</label>
+<input
+id="pmRate"
+type="number"
+step="0.00000001"
+placeholder="3.20"
+>
+</div>
+
+<div>
+<label>Description</label>
+<input
+id="pmDescription"
+placeholder="Receive through PayPal"
+>
+</div>
+
+</div>
+
+<label>Logo</label>
+
+<input
+id="pmLogo"
+type="file"
+accept="image/png,image/jpeg,image/webp,image/svg+xml"
+>
+
+<br>
+
+<img
+id="logoPreview"
+class="preview"
+>
+
+<br><br>
+
+<button
+class="primary"
+id="addPaymentMethod"
+>
++ Add Payment Method
+</button>
+
+<div
+id="pmMessage"
+class="message"
+></div>
+
+</div>
+
+
+<!-- UPI -->
+
+<div class="card">
+
+<h2>UPI Payment Links</h2>
+
+<p style="color:#8fa2b7">
+UPI payment links automatically expire when their
+expiry time reaches zero.
+</p>
+
+<div id="upiList"></div>
+
+<hr style="border-color:#20364b;margin:25px 0">
+
+<h3>Add UPI Payment Link</h3>
+
+<div class="grid">
+
+<div>
+<label>Name</label>
+<input
+id="upiName"
+placeholder="UPI Payment"
+>
+</div>
+
+<div>
+<label>Label</label>
+<input
+id="upiLabel"
+placeholder="Main UPI"
+>
+</div>
+
+<div>
+<label>Payment URL</label>
+<input
+id="upiUrl"
+placeholder="https://..."
+>
+</div>
+
+<div>
+<label>Start Date & Time</label>
+<input
+id="upiStart"
+type="datetime-local"
+>
+</div>
+
+<div>
+<label>Expiry Date & Time</label>
+<input
+id="upiExpiry"
+type="datetime-local"
+>
+</div>
+
+</div>
+
+<button
+class="primary"
+id="addUpi"
+>
++ Add UPI
+</button>
+
+<div
+id="upiMessage"
+class="message"
+></div>
+
+</div>
+
+
+<!-- ORDERS -->
+
+<div class="card">
+
+<h2>Orders</h2>
+
+<div id="orders"></div>
+
+</div>
 
 </div>
 
 
 <script>
 
-let dashboardData = null;
+let adminData = null;
+
+let selectedLogo = "";
 
 
-/* =========================
-   LOGIN
-========================= */
+// =====================================================
+// LOGIN
+// =====================================================
+
+async function checkLogin() {
+
+const response =
+await fetch(
+"/api/admin/me"
+);
+
+if (response.ok) {
+showAdmin();
+}
+
+}
 
 async function login() {
 
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value;
+const username =
+document.getElementById(
+"loginUser"
+).value;
 
-  const response = await fetch("/api/admin/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      username,
-      password
-    })
-  });
+const password =
+document.getElementById(
+"loginPass"
+).value;
 
-  const data = await response.json();
+const response =
+await fetch(
+"/api/admin/login",
+{
+method: "POST",
 
-  const msg = document.getElementById("loginMessage");
+headers: {
+"Content-Type":
+"application/json"
+},
 
-  if (!response.ok) {
-    msg.textContent = data.error || "Login failed";
-    msg.classList.remove("hidden");
-    return;
-  }
+body:
+JSON.stringify({
+username,
+password
+})
+}
+);
 
-  document.getElementById("loginSection").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
+const data =
+await response.json();
 
-  loadDashboard();
+if (!data.success) {
+
+document.getElementById(
+"loginError"
+).textContent =
+data.message;
+
+return;
+}
+
+showAdmin();
+
+}
+
+function showAdmin() {
+
+document
+.getElementById(
+"loginScreen"
+)
+.classList
+.add("hidden");
+
+document
+.getElementById(
+"adminScreen"
+)
+.classList
+.remove("hidden");
+
+loadAdminData();
+
 }
 
 
-/* =========================
-   LOAD DASHBOARD
-========================= */
+// =====================================================
+// LOAD ADMIN DATA
+// =====================================================
 
-async function loadDashboard() {
+async function loadAdminData() {
 
-  const response = await fetch("/api/admin/data");
+const response =
+await fetch(
+"/api/admin/data"
+);
 
-  if (response.status === 401) {
+if (response.status === 401) {
 
-    document.getElementById("loginSection").classList.remove("hidden");
-    document.getElementById("dashboard").classList.add("hidden");
+location.reload();
 
-    return;
-  }
+return;
+}
 
-  const data = await response.json();
+const data =
+await response.json();
 
-  dashboardData = data;
+if (!data.success) {
 
-  renderSettings();
-  renderUpi();
-  renderOrders();
+alert(data.message);
+
+return;
+}
+
+adminData = data;
+
+renderSettings();
+
+renderPaymentMethods();
+
+renderUpi();
+
+renderOrders();
+
 }
 
 
-/* =========================
-   SETTINGS
-========================= */
+// =====================================================
+// SETTINGS
+// =====================================================
 
 function renderSettings() {
 
-  const s = dashboardData.settings;
+const s =
+adminData.settings;
 
-  document.getElementById("siteName").value =
-    s.siteName || "";
+document.getElementById(
+"siteName"
+).value =
+s.siteName || "";
 
-  document.getElementById("feePercent").value =
-    s.feePercent ?? 0;
+document.getElementById(
+"fee"
+).value =
+s.feePercent || 0;
 
-  document.getElementById("minAmount").value =
-    s.minAmount ?? 0;
+document.getElementById(
+"minAmount"
+).value =
+s.minAmount || 0;
 
-  document.getElementById("maxAmount").value =
-    s.maxAmount ?? 0;
+document.getElementById(
+"maxAmount"
+).value =
+s.maxAmount || 0;
 
-  document.getElementById("rateEasypaisa").value =
-    s.rates.easypaisa ?? 0;
+document.getElementById(
+"whatsapp"
+).value =
+s.contact?.whatsapp || "";
 
-  document.getElementById("rateJazzcash").value =
-    s.rates.jazzcash ?? 0;
+document.getElementById(
+"telegram"
+).value =
+s.contact?.telegram || "";
 
-  document.getElementById("rateUsdt").value =
-    s.rates.usdt ?? 0;
-
-  document.getElementById("methodEasypaisa").checked =
-    !!s.methods.easypaisa;
-
-  document.getElementById("methodJazzcash").checked =
-    !!s.methods.jazzcash;
-
-  document.getElementById("methodUsdt").checked =
-    !!s.methods.usdt;
-
-  document.getElementById("whatsapp").value =
-    s.contact?.whatsapp || "";
-
-  document.getElementById("telegram").value =
-    s.contact?.telegram || "";
 }
-
 
 async function saveSettings() {
 
-  const body = {
+const response =
+await fetch(
+"/api/admin/settings",
+{
+method: "PUT",
 
-    siteName:
-      document.getElementById("siteName").value.trim(),
+headers: {
+"Content-Type":
+"application/json"
+},
 
-    rates: {
+body:
+JSON.stringify({
 
-      easypaisa:
-        Number(document.getElementById("rateEasypaisa").value),
+siteName:
+document.getElementById(
+"siteName"
+).value,
 
-      jazzcash:
-        Number(document.getElementById("rateJazzcash").value),
+feePercent:
+Number(
+document.getElementById(
+"fee"
+).value
+),
 
-      usdt:
-        Number(document.getElementById("rateUsdt").value)
+minAmount:
+Number(
+document.getElementById(
+"minAmount"
+).value
+),
 
-    },
+maxAmount:
+Number(
+document.getElementById(
+"maxAmount"
+).value
+),
 
-    feePercent:
-      Number(document.getElementById("feePercent").value),
+contact: {
 
-    minAmount:
-      Number(document.getElementById("minAmount").value),
+whatsapp:
+document.getElementById(
+"whatsapp"
+).value,
 
-    maxAmount:
-      Number(document.getElementById("maxAmount").value),
+telegram:
+document.getElementById(
+"telegram"
+).value
 
-    methods: {
+}
 
-      easypaisa:
-        document.getElementById("methodEasypaisa").checked,
+})
+}
+);
 
-      jazzcash:
-        document.getElementById("methodJazzcash").checked,
+const data =
+await response.json();
 
-      usdt:
-        document.getElementById("methodUsdt").checked
+document.getElementById(
+"settingsMessage"
+).textContent =
+data.message;
 
-    },
+loadAdminData();
 
-    contact: {
-
-      whatsapp:
-        document.getElementById("whatsapp").value.trim(),
-
-      telegram:
-        document.getElementById("telegram").value.trim()
-
-    }
-
-  };
-
-
-  const response = await fetch("/api/admin/settings", {
-
-    method: "PUT",
-
-    headers: {
-      "Content-Type": "application/json"
-    },
-
-    body: JSON.stringify(body)
-
-  });
-
-
-  const data = await response.json();
-
-  const msg = document.getElementById("settingsMessage");
-
-  msg.textContent =
-    response.ok
-      ? "Settings saved successfully."
-      : (data.error || "Could not save settings.");
-
-  msg.classList.remove("hidden");
-
-  if (response.ok) {
-    await loadDashboard();
-  }
 }
 
 
-/* =========================
-   UPI
-========================= */
+// =====================================================
+// LOGO UPLOAD
+// =====================================================
 
-function getUpiStatus(u) {
+document.getElementById(
+"pmLogo"
+).addEventListener(
+"change",
+function() {
 
-  if (u.archivedAt) {
-    return "Archived";
-  }
+const file =
+this.files[0];
 
-  if (!u.enabled) {
-    return "Disabled";
-  }
-
-  const now = Date.now();
-
-  if (u.startAt && new Date(u.startAt).getTime() > now) {
-    return "Scheduled";
-  }
-
-  if (u.expiresAt && new Date(u.expiresAt).getTime() <= now) {
-    return "Expired";
-  }
-
-  return "Active";
+if (!file) {
+selectedLogo = "";
+return;
 }
 
+if (
+file.size >
+1024 * 1024
+) {
+
+alert(
+"Logo must be smaller than 1 MB."
+);
+
+this.value = "";
+
+return;
+}
+
+const reader =
+new FileReader();
+
+reader.onload =
+function(event) {
+
+selectedLogo =
+event.target.result;
+
+const preview =
+document.getElementById(
+"logoPreview"
+);
+
+preview.src =
+selectedLogo;
+
+preview.style.display =
+"block";
+
+};
+
+reader.readAsDataURL(file);
+
+}
+);
+
+
+// =====================================================
+// PAYMENT METHODS
+// =====================================================
+
+function renderPaymentMethods() {
+
+const box =
+document.getElementById(
+"paymentMethods"
+);
+
+box.innerHTML = "";
+
+const methods =
+adminData.paymentMethods || [];
+
+methods.forEach(method => {
+
+const card =
+document.createElement(
+"div"
+);
+
+card.className =
+"method-card";
+
+const logo =
+method.logo
+? `<img class="method-logo" src="${escapeAttr(method.logo)}">`
+: `<div class="flag">${escapeHtml(method.flag || "🌐")}</div>`;
+
+card.innerHTML = `
+
+<div class="method-header">
+
+${logo}
+
+<div>
+
+<strong>
+${escapeHtml(method.name)}
+</strong>
+
+<div style="color:#8397ac">
+${escapeHtml(method.description || "")}
+</div>
+
+<div style="margin-top:5px">
+Rate:
+<strong>${method.rate}</strong>
+</div>
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+class="secondary"
+onclick="editPaymentMethod('${method.id}')"
+>
+Edit
+</button>
+
+<button
+class="${method.enabled ? "secondary" : "primary"}"
+onclick="togglePaymentMethod('${method.id}', ${!method.enabled})"
+>
+${method.enabled ? "Disable" : "Enable"}
+</button>
+
+<button
+class="danger"
+onclick="removePaymentMethod('${method.id}')"
+>
+Remove
+</button>
+
+</div>
+`;
+
+box.appendChild(card);
+
+});
+
+}
+
+async function addPaymentMethod() {
+
+const name =
+document.getElementById(
+"pmName"
+).value.trim();
+
+const flag =
+document.getElementById(
+"pmFlag"
+).value.trim();
+
+const rate =
+Number(
+document.getElementById(
+"pmRate"
+).value
+);
+
+const description =
+document.getElementById(
+"pmDescription"
+).value.trim();
+
+if (!name || !rate) {
+
+alert(
+"Enter name and exchange rate."
+);
+
+return;
+}
+
+const response =
+await fetch(
+"/api/admin/payment-methods",
+{
+method: "POST",
+
+headers: {
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify({
+name,
+flag,
+rate,
+description,
+logo: selectedLogo
+})
+}
+);
+
+const data =
+await response.json();
+
+document.getElementById(
+"pmMessage"
+).textContent =
+data.message;
+
+if (data.success) {
+
+document.getElementById(
+"pmName"
+).value = "";
+
+document.getElementById(
+"pmFlag"
+).value = "";
+
+document.getElementById(
+"pmRate"
+).value = "";
+
+document.getElementById(
+"pmDescription"
+).value = "";
+
+document.getElementById(
+"pmLogo"
+).value = "";
+
+document.getElementById(
+"logoPreview"
+).style.display =
+"none";
+
+selectedLogo = "";
+
+loadAdminData();
+
+}
+
+}
+
+async function togglePaymentMethod(
+id,
+enabled
+) {
+
+await fetch(
+"/api/admin/payment-methods/" +
+encodeURIComponent(id),
+{
+method: "PUT",
+
+headers: {
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify({
+enabled
+})
+}
+);
+
+loadAdminData();
+
+}
+
+async function editPaymentMethod(
+id
+) {
+
+const method =
+adminData.paymentMethods.find(
+item =>
+item.id === id
+);
+
+if (!method) return;
+
+const name =
+prompt(
+"Payment method name:",
+method.name
+);
+
+if (name === null) return;
+
+const rate =
+prompt(
+"Exchange rate:",
+method.rate
+);
+
+if (rate === null) return;
+
+const description =
+prompt(
+"Description:",
+method.description || ""
+);
+
+if (description === null) return;
+
+const flag =
+prompt(
+"Country flag/icon:",
+method.flag || "🌐"
+);
+
+if (flag === null) return;
+
+await fetch(
+"/api/admin/payment-methods/" +
+encodeURIComponent(id),
+{
+method: "PUT",
+
+headers: {
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify({
+name,
+rate:
+Number(rate),
+description,
+flag
+})
+}
+);
+
+loadAdminData();
+
+}
+
+async function removePaymentMethod(
+id
+) {
+
+if (
+!confirm(
+"Remove this payment method?"
+)
+) {
+return;
+}
+
+await fetch(
+"/api/admin/payment-methods/" +
+encodeURIComponent(id),
+{
+method: "DELETE"
+}
+);
+
+loadAdminData();
+
+}
+
+
+// =====================================================
+// UPI
+// =====================================================
 
 function renderUpi() {
 
-  const list =
-    document.getElementById("upiList");
+const box =
+document.getElementById(
+"upiList"
+);
 
-  if (!dashboardData.upiLinks.length) {
+box.innerHTML = "";
 
-    list.innerHTML =
-      "<p class='small'>No UPI links added yet.</p>";
+const links =
+adminData.upiLinks || [];
 
-    return;
-  }
+if (!links.length) {
 
+box.innerHTML =
+"<p style='color:#8397ac'>No UPI links.</p>";
 
-  list.innerHTML =
-    dashboardData.upiLinks.map(u => {
+return;
 
-      const status = getUpiStatus(u);
-
-      let statusClass = "";
-
-      if (status === "Active")
-        statusClass = "status-active";
-
-      if (status === "Expired")
-        statusClass = "status-expired";
-
-      if (status === "Disabled")
-        statusClass = "status-disabled";
-
-      if (status === "Scheduled")
-        statusClass = "status-scheduled";
-
-
-      return `
-        <div class="upi-card">
-
-          <strong>${escapeHtml(u.name)}</strong>
-
-          <br><br>
-
-          <span class="status ${statusClass}">
-            ${status}
-          </span>
-
-          <p>
-            <strong>URL:</strong>
-            ${escapeHtml(u.url)}
-          </p>
-
-          <p>
-            <strong>Start:</strong>
-            ${u.startAt || "Immediately"}
-          </p>
-
-          <p>
-            <strong>Expiry:</strong>
-            ${u.expiresAt || "No expiry"}
-          </p>
-
-          <div class="top-buttons">
-
-            <button
-              onclick="toggleUpi('${u.id}', ${!u.enabled})">
-              ${u.enabled ? "Disable" : "Enable"}
-            </button>
-
-            <button
-              class="secondary"
-              onclick="editUpi('${u.id}')">
-              Edit
-            </button>
-
-            ${
-              !u.archivedAt
-              ? `<button
-                  class="danger"
-                  onclick="archiveUpi('${u.id}')">
-                  Archive
-                </button>`
-              : ""
-            }
-
-          </div>
-
-        </div>
-      `;
-
-    }).join("");
 }
 
+links.forEach(upi => {
+
+const card =
+document.createElement(
+"div"
+);
+
+card.className =
+"upi-card";
+
+card.innerHTML = `
+
+<div>
+
+<strong>
+🇮🇳 ${escapeHtml(upi.name)}
+</strong>
+
+<div style="color:#8397ac;margin-top:5px">
+${escapeHtml(upi.label || "")}
+</div>
+
+<div
+class="countdown"
+data-expiry="${upi.expiryAt || ""}"
+>
+${upi.state}
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+class="secondary"
+onclick="editUpi('${upi.id}')"
+>
+Edit
+</button>
+
+<button
+class="danger"
+onclick="removeUpi('${upi.id}')"
+>
+Archive
+</button>
+
+</div>
+`;
+
+box.appendChild(card);
+
+});
+
+startUpiCountdowns();
+
+}
+
+function startUpiCountdowns() {
+
+document
+.querySelectorAll(
+".upi-card .countdown"
+)
+.forEach(el => {
+
+const expiry =
+el.dataset.expiry;
+
+if (!expiry) return;
+
+const update =
+() => {
+
+const remaining =
+new Date(expiry).getTime() -
+Date.now();
+
+if (
+remaining <= 0
+) {
+
+el.textContent =
+"Expired";
+
+setTimeout(
+loadAdminData,
+1000
+);
+
+return;
+}
+
+el.textContent =
+formatRemaining(
+remaining
+);
+
+};
+
+update();
+
+setInterval(
+update,
+1000
+);
+
+});
+
+}
 
 async function addUpi() {
 
-  const name =
-    document.getElementById("upiName").value.trim();
+const body = {
 
-  const url =
-    document.getElementById("upiUrl").value.trim();
+name:
+document.getElementById(
+"upiName"
+).value.trim(),
 
-  const startAt =
-    document.getElementById("upiStart").value;
+label:
+document.getElementById(
+"upiLabel"
+).value.trim(),
 
-  const expiresAt =
-    document.getElementById("upiExpiry").value;
+url:
+document.getElementById(
+"upiUrl"
+).value.trim(),
 
+startAt:
+toISO(
+document.getElementById(
+"upiStart"
+).value
+),
 
-  const response = await fetch("/api/admin/upi", {
+expiryAt:
+toISO(
+document.getElementById(
+"upiExpiry"
+).value
+)
 
-    method: "POST",
+};
 
-    headers: {
-      "Content-Type": "application/json"
-    },
+const response =
+await fetch(
+"/api/admin/upi",
+{
+method: "POST",
 
-    body: JSON.stringify({
+headers: {
+"Content-Type":
+"application/json"
+},
 
-      name,
-      url,
-      startAt: startAt
-        ? new Date(startAt).toISOString()
-        : null,
+body:
+JSON.stringify(body)
+}
+);
 
-      expiresAt: expiresAt
-        ? new Date(expiresAt).toISOString()
-        : null
+const data =
+await response.json();
 
-    })
+document.getElementById(
+"upiMessage"
+).textContent =
+data.message;
 
-  });
+if (data.success) {
 
+document.getElementById(
+"upiName"
+).value = "";
 
-  const data = await response.json();
+document.getElementById(
+"upiLabel"
+).value = "";
 
-  const msg =
-    document.getElementById("upiMessage");
+document.getElementById(
+"upiUrl"
+).value = "";
 
-  msg.textContent =
-    response.ok
-      ? "UPI link added."
-      : (data.error || "Could not add UPI.");
+document.getElementById(
+"upiStart"
+).value = "";
 
-  msg.classList.remove("hidden");
+document.getElementById(
+"upiExpiry"
+).value = "";
 
+loadAdminData();
 
-  if (response.ok) {
-
-    document.getElementById("upiName").value = "";
-    document.getElementById("upiUrl").value = "";
-    document.getElementById("upiStart").value = "";
-    document.getElementById("upiExpiry").value = "";
-
-    await loadDashboard();
-  }
 }
 
-
-async function toggleUpi(id, enabled) {
-
-  const item =
-    dashboardData.upiLinks.find(x => x.id === id);
-
-  if (!item) return;
-
-
-  const response = await fetch(
-    "/api/admin/upi/" + encodeURIComponent(id),
-    {
-      method: "PUT",
-
-      headers: {
-        "Content-Type": "application/json"
-      },
-
-      body: JSON.stringify({
-        name: item.name,
-        url: item.url,
-        startAt: item.startAt,
-        expiresAt: item.expiresAt,
-        enabled
-      })
-    }
-  );
-
-
-  if (!response.ok) {
-
-    const data = await response.json();
-
-    alert(data.error || "Could not update UPI.");
-
-    return;
-  }
-
-
-  await loadDashboard();
 }
-
 
 async function editUpi(id) {
 
-  const item =
-    dashboardData.upiLinks.find(x => x.id === id);
+const upi =
+adminData.upiLinks.find(
+item =>
+item.id === id
+);
 
-  if (!item) return;
+if (!upi) return;
 
+const name =
+prompt(
+"UPI name:",
+upi.name
+);
 
-  const name =
-    prompt("UPI name:", item.name);
+if (name === null) return;
 
-  if (name === null) return;
+const label =
+prompt(
+"Label:",
+upi.label || ""
+);
 
+if (label === null) return;
 
-  const url =
-    prompt("UPI URL:", item.url);
+const url =
+prompt(
+"Payment URL:",
+upi.url
+);
 
-  if (url === null) return;
+if (url === null) return;
 
+const expiry =
+prompt(
+"Expiry ISO date/time or blank:",
+upi.expiryAt || ""
+);
 
-  const start =
-    prompt(
-      "Start date/time (ISO format or blank):",
-      item.startAt || ""
-    );
+if (expiry === null) return;
 
-  if (start === null) return;
+const response =
+await fetch(
+"/api/admin/upi/" +
+encodeURIComponent(id),
+{
+method: "PUT",
 
+headers: {
+"Content-Type":
+"application/json"
+},
 
-  const expiry =
-    prompt(
-      "Expiry date/time (ISO format or blank):",
-      item.expiresAt || ""
-    );
+body:
+JSON.stringify({
+name,
+label,
+url,
+expiryAt:
+expiry || null
+})
+}
+);
 
-  if (expiry === null) return;
+const data =
+await response.json();
 
+alert(data.message);
 
-  const response = await fetch(
-    "/api/admin/upi/" + encodeURIComponent(id),
-    {
+loadAdminData();
 
-      method: "PUT",
+}
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+async function removeUpi(id) {
 
-      body: JSON.stringify({
+if (
+!confirm(
+"Archive this UPI?"
+)
+) {
+return;
+}
 
-        name,
-        url,
+await fetch(
+"/api/admin/upi/" +
+encodeURIComponent(id),
+{
+method: "DELETE"
+}
+);
 
-        startAt:
-          start.trim()
-            ? start.trim()
-            : null,
+loadAdminData();
 
-        expiresAt:
-          expiry.trim()
-            ? expiry.trim()
-            : null,
-
-        enabled: item.enabled
-
-      })
-
-    }
-  );
-
-
-  const data = await response.json();
-
-
-  if (!response.ok) {
-
-    alert(
-      data.error ||
-      "Could not update UPI."
-    );
-
-    return;
-  }
-
-
-  await loadDashboard();
 }
 
 
-async function archiveUpi(id) {
-
-  if (!confirm(
-    "Archive this UPI link? It will no longer appear to customers."
-  )) {
-    return;
-  }
-
-
-  const response = await fetch(
-    "/api/admin/upi/" +
-    encodeURIComponent(id),
-    {
-      method: "DELETE"
-    }
-  );
-
-
-  if (!response.ok) {
-
-    const data = await response.json();
-
-    alert(
-      data.error ||
-      "Could not archive UPI."
-    );
-
-    return;
-  }
-
-
-  await loadDashboard();
-}
-
-
-/* =========================
-   ORDERS
-========================= */
+// =====================================================
+// ORDERS
+// =====================================================
 
 function renderOrders() {
 
-  const list =
-    document.getElementById("ordersList");
+const box =
+document.getElementById(
+"orders"
+);
 
+box.innerHTML = "";
 
-  if (!dashboardData.orders.length) {
+const orders =
+adminData.orders || [];
 
-    list.innerHTML =
-      "<p class='small'>No orders yet.</p>";
+if (!orders.length) {
 
-    return;
-  }
+box.innerHTML =
+"<p style='color:#8397ac'>No orders yet.</p>";
 
+return;
 
-  const orders =
-    [...dashboardData.orders]
-      .sort(
-        (a,b) =>
-          new Date(b.createdAt) -
-          new Date(a.createdAt)
-      );
+}
 
+orders
+.slice()
+.reverse()
+.forEach(order => {
 
-  list.innerHTML =
-    orders.map(order => {
+const card =
+document.createElement(
+"div"
+);
 
-      let statusClass = "";
+card.className =
+"order-card";
 
-      if (order.status === "processing")
-        statusClass = "status-processing";
+card.innerHTML = `
 
-      if (order.status === "completed")
-        statusClass = "status-completed";
+<div>
+<strong>
+${escapeHtml(order.id)}
+</strong>
+</div>
 
-      if (order.status === "rejected")
-        statusClass = "status-rejected";
+<div style="margin-top:8px">
+Amount:
+${formatNumber(order.amount)}
+</div>
 
+<div>
+Receive:
+${escapeHtml(
+order.paymentMethodName ||
+order.paymentMethod ||
+""
+)}
+-
+${formatNumber(
+order.receiveAmount
+)}
+</div>
 
-      return `
-        <div class="order-card">
+<div>
+Rate:
+${order.rate}
+</div>
 
-          <h3>
-            Order:
-            ${escapeHtml(order.id)}
-          </h3>
+<div>
+Reference:
+${escapeHtml(
+order.paymentReference ||
+"Not submitted"
+)}
+</div>
 
-          <span class="status ${statusClass}">
-            ${escapeHtml(order.status)}
-          </span>
+<div style="margin-top:10px">
 
-          <br><br>
+<select
+id="status-${order.id}"
+>
+<option value="pending">Pending</option>
+<option value="processing">Processing</option>
+<option value="completed">Completed</option>
+<option value="rejected">Rejected</option>
+</select>
 
-          <div class="order-grid">
+<textarea
+id="note-${order.id}"
+placeholder="Admin note"
+>${escapeHtml(
+order.adminNote || ""
+)}</textarea>
 
-            <div>
-              <strong>Created:</strong><br>
-              ${escapeHtml(order.createdAt)}
-            </div>
+<button
+class="primary"
+onclick="saveOrder('${order.id}')"
+>
+Save Order
+</button>
 
-            <div>
-              <strong>Receive Method:</strong><br>
-              ${escapeHtml(order.receiveMethod)}
-            </div>
+</div>
+`;
 
-            <div>
-              <strong>Send Amount:</strong><br>
-              ${escapeHtml(String(order.sendAmount))}
-            </div>
+box.appendChild(card);
 
-            <div>
-              <strong>Locked Rate:</strong><br>
-              ${escapeHtml(String(order.rate))}
-            </div>
+const select =
+document.getElementById(
+"status-" +
+order.id
+);
 
-            <div>
-              <strong>Receive Amount:</strong><br>
-              ${escapeHtml(String(order.receiveAmount))}
-            </div>
+select.value =
+order.status;
 
-            <div>
-              <strong>Payment Reference:</strong><br>
-              ${escapeHtml(order.paymentRef || "Not submitted")}
-            </div>
+});
 
-          </div>
+}
 
-          <h3>Receiver Details</h3>
+async function saveOrder(id) {
 
-          <p>
-            <strong>Account / Wallet:</strong><br>
-            ${escapeHtml(
-              order.receiver?.account ||
-              order.receiver?.wallet ||
-              ""
-            )}
-          </p>
+const status =
+document.getElementById(
+"status-" + id
+).value;
 
-          ${
-            order.receiver?.name
-            ? `
-              <p>
-                <strong>Account Name:</strong><br>
-                ${escapeHtml(order.receiver.name)}
-              </p>
-            `
-            : ""
-          }
+const adminNote =
+document.getElementById(
+"note-" + id
+).value;
 
-          ${
-            order.receiver?.network
-            ? `
-              <p>
-                <strong>USDT Network:</strong><br>
-                ${escapeHtml(order.receiver.network)}
-              </p>
-            `
-            : ""
-          }
+const response =
+await fetch(
+"/api/admin/orders/" +
+encodeURIComponent(id),
+{
+method: "PUT",
 
-          <h3>Admin Action</h3>
+headers: {
+"Content-Type":
+"application/json"
+},
 
-          <label>Status</label>
+body:
+JSON.stringify({
+status,
+adminNote
+})
+}
+);
 
-          <select id="status-${order.id}">
+const data =
+await response.json();
 
-            <option value="pending"
-              ${order.status === "pending" ? "selected" : ""}>
-              Pending
-            </option>
+alert(data.message);
 
-            <option value="processing"
-              ${order.status === "processing" ? "selected" : ""}>
-              Processing
-            </option>
+loadAdminData();
 
-            <option value="completed"
-              ${order.status === "completed" ? "selected" : ""}>
-              Completed
-            </option>
-
-            <option value="rejected"
-              ${order.status === "rejected" ? "selected" : ""}>
-              Rejected
-            </option>
-
-          </select>
-
-
-          <label>Payment Reference</label>
-
-          <input
-            id="payment-${order.id}"
-            value="${escapeAttr(order.paymentRef || "")}"
-            placeholder="Transaction reference"
-          >
-
-
-          <label>Admin Note</label>
-
-          <textarea
-            id="note-${order.id}"
-            placeholder="Internal/admin note"
-          >${escapeHtml(order.note || "")}</textarea>
-
-
-          <br><br>
-
-          <button
-            class="success"
-            onclick="updateOrder('${order.id}')">
-            Save Order
-          </button>
-
-        </div>
-      `;
-
-    }).join("");
 }
 
 
-async function updateOrder(id) {
-
-  const status =
-    document.getElementById(
-      "status-" + id
-    ).value;
-
-  const paymentRef =
-    document.getElementById(
-      "payment-" + id
-    ).value.trim();
-
-  const note =
-    document.getElementById(
-      "note-" + id
-    ).value.trim();
-
-
-  const response = await fetch(
-    "/api/admin/orders/" +
-    encodeURIComponent(id),
-    {
-
-      method: "PUT",
-
-      headers: {
-        "Content-Type": "application/json"
-      },
-
-      body: JSON.stringify({
-        status,
-        paymentRef,
-        note
-      })
-
-    }
-  );
-
-
-  const data = await response.json();
-
-
-  if (!response.ok) {
-
-    alert(
-      data.error ||
-      "Could not update order."
-    );
-
-    return;
-  }
-
-
-  alert("Order updated.");
-
-  await loadDashboard();
-}
-
-
-/* =========================
-   LOGOUT
-========================= */
+// =====================================================
+// LOGOUT
+// =====================================================
 
 async function logout() {
 
-  await fetch(
-    "/api/admin/logout",
-    {
-      method: "POST"
-    }
-  );
+await fetch(
+"/api/admin/logout",
+{
+method: "POST"
+}
+);
 
-  location.reload();
+location.reload();
+
 }
 
 
-/* =========================
-   SECURITY HELPERS
-========================= */
+// =====================================================
+// HELPERS
+// =====================================================
 
-function escapeHtml(value) {
+function toISO(value) {
 
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+if (!value) return null;
+
+const date =
+new Date(value);
+
+if (
+Number.isNaN(
+date.getTime()
+)
+) {
+return null;
+}
+
+return date.toISOString();
+
+}
+
+function formatRemaining(ms) {
+
+const total =
+Math.max(
+0,
+Math.floor(
+ms / 1000
+)
+);
+
+const minutes =
+Math.floor(
+total / 60
+);
+
+const seconds =
+total % 60;
+
+return (
+minutes
+.toString()
+.padStart(2, "0") +
+":" +
+seconds
+.toString()
+.padStart(2, "0") +
+" remaining"
+);
+
+}
+
+function formatNumber(
+value
+) {
+
+return Number(value)
+.toLocaleString(
+undefined,
+{
+maximumFractionDigits: 8
+}
+);
+
+}
+
+function escapeHtml(
+value
+) {
+
+return String(value)
+.replace(
+/&/g,
+"&amp;"
+)
+.replace(
+/</g,
+"&lt;"
+)
+.replace(
+/>/g,
+"&gt;"
+)
+.replace(
+/"/g,
+"&quot;"
+);
+
+}
+
+function escapeAttr(
+value
+) {
+
+return String(value)
+.replace(
+/"/g,
+"&quot;"
+)
+.replace(
+/</g,
+"&lt;"
+)
+.replace(
+/>/g,
+"&gt;"
+);
+
 }
 
 
-function escapeAttr(value) {
-  return escapeHtml(value);
-}
+// =====================================================
+// EVENTS
+// =====================================================
 
+document
+.getElementById(
+"loginBtn"
+)
+.addEventListener(
+"click",
+login
+);
 
-/* =========================
-   AUTO CHECK LOGIN
-========================= */
+document
+.getElementById(
+"logoutBtn"
+)
+.addEventListener(
+"click",
+logout
+);
 
-loadDashboard();
+document
+.getElementById(
+"saveSettings"
+)
+.addEventListener(
+"click",
+saveSettings
+);
+
+document
+.getElementById(
+"addPaymentMethod"
+)
+.addEventListener(
+"click",
+addPaymentMethod
+);
+
+document
+.getElementById(
+"addUpi"
+)
+.addEventListener(
+"click",
+addUpi
+);
+
+checkLogin();
 
 </script>
 
 </body>
+
 </html>
