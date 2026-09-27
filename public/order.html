@@ -1,261 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Payment - Quick Exchange</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<title>Quick Exchange - Order</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      color: #172033;
-    }
+<style>
 
-    .header {
-      background: #111827;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    .header h1 {
-      margin: 0;
-    }
+body {
+  margin: 0;
+  background: #07111f;
+  color: white;
+  font-family: Arial, sans-serif;
+}
 
-    .container {
-      width: 92%;
-      max-width: 600px;
-      margin: 30px auto;
-    }
+.container {
+  width: min(900px, 94%);
+  margin: auto;
+}
 
-    .card {
-      background: white;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 5px 25px rgba(0,0,0,.08);
-      margin-bottom: 20px;
-    }
+header {
+  padding: 25px 0;
+}
 
-    .order-id {
-      background: #eef2ff;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      word-break: break-all;
-    }
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+}
 
-    .amount {
-      font-size: 28px;
-      font-weight: bold;
-      margin: 10px 0;
-    }
+.card {
+  background: #0d1b2e;
+  border: 1px solid #1d3854;
+  border-radius: 22px;
+  padding: 25px;
+  margin-top: 20px;
+}
 
-    .upi-button {
-      width: 100%;
-      border: 0;
-      padding: 15px;
-      margin-top: 10px;
-      border-radius: 9px;
-      background: #2563eb;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.order-id {
+  color: #2dd4bf;
+  font-weight: 800;
+}
 
-    .upi-button:hover {
-      opacity: .9;
-    }
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #1b3047;
+}
 
-    label {
-      display: block;
-      margin-top: 18px;
-      margin-bottom: 7px;
-      font-weight: bold;
-    }
+.label {
+  color: #8ea3ba;
+}
 
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #d6dbe5;
-      border-radius: 9px;
-      font-size: 16px;
-    }
+.value {
+  font-weight: 700;
+}
 
-    .submit {
-      width: 100%;
-      border: 0;
-      padding: 14px;
-      margin-top: 20px;
-      border-radius: 9px;
-      background: #111827;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.upi {
+  margin-top: 25px;
+}
 
-    .status {
-      padding: 12px;
-      background: #f3f4f6;
-      border-radius: 8px;
-      margin-top: 15px;
-    }
+.upi-option {
+  border: 1px solid #284560;
+  background: #071525;
+  border-radius: 15px;
+  padding: 16px;
+  margin: 10px 0;
+}
 
-    .error {
-      color: #b91c1c;
-      margin-top: 10px;
-    }
+.upi-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
 
-    .success {
-      color: #166534;
-      margin-top: 10px;
-    }
+.upi-name {
+  font-weight: 800;
+}
 
-    .contact {
-      text-align: center;
-      margin-top: 20px;
-    }
+.countdown {
+  color: #2dd4bf;
+  font-weight: 800;
+}
 
-    .contact a {
-      display: inline-block;
-      margin: 5px;
-      padding: 10px 15px;
-      background: #e5e7eb;
-      border-radius: 8px;
-      text-decoration: none;
-      color: #111827;
-    }
+.pay {
+  margin-top: 12px;
+  width: 100%;
+  padding: 13px;
+  border: 0;
+  border-radius: 10px;
+  background: #17bfae;
+  font-weight: 800;
+  cursor: pointer;
+}
 
-    .small {
-      color: #6b7280;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-  </style>
+input {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 12px;
+  border: 1px solid #29445e;
+  background: #071525;
+  color: white;
+}
+
+button.submit {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  border: 0;
+  border-radius: 12px;
+  background: #17bfae;
+  font-weight: 800;
+}
+
+.message {
+  margin-top: 12px;
+  color: #ff8080;
+}
+
+.status {
+  margin-top: 25px;
+  padding: 15px;
+  border-radius: 12px;
+  background: #071525;
+}
+
+a {
+  color: #2dd4bf;
+}
+
+</style>
+
 </head>
 
 <body>
 
-  <div class="header">
-    <h1>Quick Exchange</h1>
-    <p>Complete your payment</p>
+<div class="container">
+
+<header>
+  <div class="logo">⚡ Quick Exchange</div>
+</header>
+
+<div class="card">
+
+  <div>
+    Order ID:
+    <span id="orderId" class="order-id">
+      Loading...
+    </span>
   </div>
 
-  <div class="container">
-
-    <div class="card">
-
-      <h2>Order Created</h2>
-
-      <div class="order-id" id="orderId">
-        Loading...
-      </div>
-
-      <p>You send:</p>
-
-      <div class="amount" id="sendAmount">
-        -
-      </div>
-
-      <p>You receive:</p>
-
-      <div class="amount" id="receiveAmount">
-        -
-      </div>
-
-      <p id="rateText"></p>
-
-    </div>
-
-
-    <div class="card">
-
-      <h2>1. Pay with UPI</h2>
-
-      <p class="small">
-        Select one of the available UPI payment options.
-        You will be redirected to the payment link.
-        After completing the payment, return to this page.
-      </p>
-
-      <div id="upiList">
-        Loading UPI options...
-      </div>
-
-      <div
-        id="upiMessage"
-        class="error"
-      ></div>
-
-    </div>
-
-
-    <div class="card">
-
-      <h2>2. Submit Payment Reference</h2>
-
-      <p class="small">
-        After completing your payment, enter the
-        transaction/reference ID provided by your payment service.
-      </p>
-
-      <label>
-        Payment / Transaction Reference
-      </label>
-
-      <input
-        id="paymentRef"
-        type="text"
-        maxlength="100"
-        placeholder="Enter transaction ID"
-      >
-
-      <button
-        class="submit"
-        id="submitPayment"
-      >
-        Submit Payment Reference
-      </button>
-
-      <div id="submitMessage"></div>
-
-    </div>
-
-
-    <div class="card">
-
-      <h2>Order Status</h2>
-
-      <div
-        class="status"
-        id="status"
-      >
-        Pending
-      </div>
-
-      <button
-        class="submit"
-        onclick="openStatus()"
-      >
-        Track Order
-      </button>
-
-    </div>
-
-
-    <div
-      class="contact"
-      id="contact"
-    ></div>
-
+  <div class="row">
+    <span class="label">You Send</span>
+    <span class="value" id="sendAmount">—</span>
   </div>
 
+  <div class="row">
+    <span class="label">Receive Method</span>
+    <span class="value" id="method">—</span>
+  </div>
+
+  <div class="row">
+    <span class="label">Locked Rate</span>
+    <span class="value" id="rate">—</span>
+  </div>
+
+  <div class="row">
+    <span class="label">You Receive</span>
+    <span class="value" id="receiveAmount">—</span>
+  </div>
+
+</div>
+
+<div class="card upi">
+
+  <h2>Pay with UPI</h2>
+
+  <p style="color:#91a4b8">
+    Select an active payment option below.
+  </p>
+
+  <div id="upiList">
+    Loading...
+  </div>
+
+</div>
+
+<div class="card">
+
+  <h2>Payment Reference</h2>
+
+  <input
+    id="paymentReference"
+    placeholder="Enter transaction/reference ID"
+  >
+
+  <button
+    class="submit"
+    id="submitReference"
+  >
+    Submit Payment Reference
+  </button>
+
+  <div
+    class="message"
+    id="message"
+  ></div>
+
+</div>
+
+<div class="card status">
+
+  Current Status:
+  <strong id="status">—</strong>
+
+  <br><br>
+
+  <a id="statusLink" href="#">
+    Track Order
+  </a>
+
+</div>
+
+</div>
 
 <script>
 
@@ -268,305 +243,297 @@ const orderId =
   params.get("id");
 
 let order = null;
-let config = null;
 
+let publicData = null;
 
-// ==============================
-// LOAD ORDER
-// ==============================
+let countdownTimer = null;
 
 async function loadOrder() {
 
   if (!orderId) {
-
-    document.getElementById(
-      "orderId"
-    ).textContent =
-      "No order ID";
+    document.body.innerHTML =
+      "<h2 style='padding:30px'>Missing order ID.</h2>";
 
     return;
   }
 
+  const response =
+    await fetch(
+      "/api/orders/" +
+      encodeURIComponent(
+        orderId
+      )
+    );
 
-  try {
+  const data =
+    await response.json();
 
-    const response =
-      await fetch(
-        `/api/orders/${encodeURIComponent(orderId)}`
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if (!response.ok) {
-
-      document.getElementById(
-        "orderId"
-      ).textContent =
-        "Order not found";
-
-      return;
-    }
-
-
-    order =
-      data.order;
-
-
-    displayOrder();
-
-    await loadConfig();
-
-  } catch {
-
-    document.getElementById(
-      "orderId"
-    ).textContent =
-      "Unable to load order";
-
+  if (!data.success) {
+    throw new Error(
+      data.message
+    );
   }
 
+  order = data.order;
+
+  renderOrder();
+
+  await loadPublic();
+
+  startCountdowns();
 }
 
-
-// ==============================
-// DISPLAY ORDER
-// ==============================
-
-function displayOrder() {
+function renderOrder() {
 
   document.getElementById(
     "orderId"
   ).textContent =
     order.id;
 
-
   document.getElementById(
     "sendAmount"
   ).textContent =
-    `${order.sendAmount} INR`;
+    formatNumber(
+      order.amount
+    );
 
+  document.getElementById(
+    "method"
+  ).textContent =
+    order.paymentMethodName ||
+    order.paymentMethod;
 
-  let unit = "PKR";
-
-
-  if (
-    order.receiveMethod === "usdt"
-  ) {
-    unit = "USDT";
-  }
-
+  document.getElementById(
+    "rate"
+  ).textContent =
+    order.rate;
 
   document.getElementById(
     "receiveAmount"
   ).textContent =
-    `${order.receiveAmount} ${unit}`;
-
-
-  document.getElementById(
-    "rateText"
-  ).textContent =
-    `Locked rate: 1 INR = ${order.rate} ${unit}`;
-
+    formatNumber(
+      order.receiveAmount
+    );
 
   document.getElementById(
     "status"
   ).textContent =
-    formatStatus(order.status);
+    order.status;
 
+  document.getElementById(
+    "statusLink"
+  ).href =
+    "/status?id=" +
+    encodeURIComponent(
+      order.id
+    );
 
-  if (order.paymentRef) {
-
-    document.getElementById(
-      "paymentRef"
-    ).value =
-      order.paymentRef;
-
-  }
-
+  document.getElementById(
+    "paymentReference"
+  ).value =
+    order.paymentReference ||
+    "";
 }
 
-
-// ==============================
-// LOAD PUBLIC CONFIG
-// ==============================
-
-async function loadConfig() {
+async function loadPublic() {
 
   const response =
-    await fetch("/api/public");
+    await fetch(
+      "/api/public"
+    );
 
-  config =
+  publicData =
     await response.json();
 
-
-  displayUPI();
-
-  displayContact();
-
+  renderUpi();
 }
 
-
-// ==============================
-// DISPLAY UPI
-// ==============================
-
-function displayUPI() {
+function renderUpi() {
 
   const box =
     document.getElementById(
       "upiList"
     );
 
+  const links =
+    publicData.upiLinks || [];
 
-  box.innerHTML = "";
+  if (!links.length) {
 
-
-  if (
-    !config.upiLinks ||
-    config.upiLinks.length === 0
-  ) {
-
-    box.innerHTML = `
-      <p>
-        UPI is temporarily unavailable.
-      </p>
-    `;
-
-    document.getElementById(
-      "upiMessage"
-    ).textContent =
-      "Need an active UPI? Please contact us.";
+    box.innerHTML =
+      `<p style="color:#8fa3ba">
+        No active UPI payment option is currently available.
+      </p>`;
 
     return;
   }
 
+  box.innerHTML = "";
 
-  config.upiLinks.forEach(
-    upi => {
+  links.forEach(upi => {
 
-      const button =
-        document.createElement(
-          "button"
-        );
-
-
-      button.className =
-        "upi-button";
-
-
-      button.textContent =
-        upi.name;
-
-
-      button.onclick =
-        () => payWithUPI(upi);
-
-
-      box.appendChild(
-        button
+    const div =
+      document.createElement(
+        "div"
       );
 
-    }
-  );
+    div.className =
+      "upi-option";
 
+    div.innerHTML = `
+      <div class="upi-top">
+        <div>
+          <div class="upi-name">
+            🇮🇳 ${escapeHtml(upi.name)}
+          </div>
+
+          <div style="color:#8296ad;margin-top:5px">
+            ${escapeHtml(upi.label || "UPI Payment")}
+          </div>
+        </div>
+
+        <div
+          class="countdown"
+          data-expiry="${upi.expiryAt || ""}"
+          data-start="${upi.startAt || ""}"
+        >
+          Calculating...
+        </div>
+      </div>
+
+      <button class="pay">
+        Pay with this UPI
+      </button>
+    `;
+
+    div
+      .querySelector(".pay")
+      .addEventListener(
+        "click",
+        () => selectUpi(upi.id)
+      );
+
+    box.appendChild(div);
+  });
 }
 
+function startCountdowns() {
 
-// ==============================
-// PAY WITH UPI
-// ==============================
+  if (countdownTimer) {
+    clearInterval(
+      countdownTimer
+    );
+  }
 
-function payWithUPI(upi) {
+  updateCountdowns();
 
-  /*
-    Only allow normal HTTPS links
-    or UPI payment deep links.
-  */
+  countdownTimer =
+    setInterval(
+      updateCountdowns,
+      1000
+    );
+}
 
-  try {
+async function updateCountdowns() {
 
-    const parsed =
-      new URL(upi.url);
+  const elements =
+    document.querySelectorAll(
+      ".countdown"
+    );
 
+  let expired = false;
 
-    if (
-      parsed.protocol !== "https:" &&
-      parsed.protocol !== "upi:"
-    ) {
+  elements.forEach(element => {
 
-      alert(
-        "This payment link is not allowed."
-      );
+    const expiry =
+      element.dataset.expiry;
+
+    if (!expiry) {
+
+      element.textContent =
+        "Available";
 
       return;
     }
 
+    const remaining =
+      new Date(expiry).getTime() -
+      Date.now();
 
-    /*
-      Save the selected UPI locally.
-      The payment reference is submitted
-      separately after payment.
-    */
+    if (remaining <= 0) {
 
-    localStorage.setItem(
-      `selectedUpi_${orderId}`,
-      upi.id
-    );
+      element.textContent =
+        "Expired";
 
+      expired = true;
 
-    window.location.href =
-      upi.url;
+      return;
+    }
 
-  } catch {
+    element.textContent =
+      formatRemaining(
+        remaining
+      );
+  });
 
-    alert(
-      "Invalid payment link."
-    );
+  if (expired) {
 
+    await loadPublic();
+
+    startCountdowns();
   }
-
 }
 
+function formatRemaining(ms) {
 
-// ==============================
-// SUBMIT PAYMENT REFERENCE
-// ==============================
-
-async function submitPayment() {
-
-  const paymentRef =
-    document.getElementById(
-      "paymentRef"
-    ).value.trim();
-
-
-  if (!paymentRef) {
-
-    showSubmitMessage(
-      "Please enter your payment/reference ID.",
-      true
+  const totalSeconds =
+    Math.max(
+      0,
+      Math.floor(ms / 1000)
     );
 
-    return;
-  }
+  const minutes =
+    Math.floor(
+      totalSeconds / 60
+    );
 
+  const seconds =
+    totalSeconds % 60;
+
+  return (
+    minutes
+      .toString()
+      .padStart(2, "0") +
+    ":" +
+    seconds
+      .toString()
+      .padStart(2, "0") +
+    " remaining"
+  );
+}
+
+async function selectUpi(
+  upiId
+) {
+
+  const message =
+    document.getElementById(
+      "message"
+    );
+
+  message.textContent = "";
 
   try {
 
-    /*
-      NOTE:
-      This endpoint will be added to server.js
-      in the next backend update.
-    */
-
     const response =
       await fetch(
-        `/api/orders/${encodeURIComponent(orderId)}`,
+        "/api/orders/" +
+        encodeURIComponent(
+          orderId
+        ) +
+        "/select-upi",
         {
-          method: "PUT",
+          method: "POST",
 
           headers: {
             "Content-Type":
@@ -575,194 +542,131 @@ async function submitPayment() {
 
           body:
             JSON.stringify({
-              paymentRef:
-                paymentRef
+              upiId
             })
         }
       );
 
-
     const data =
       await response.json();
 
-
-    if (!response.ok) {
-
-      showSubmitMessage(
-        data.error ||
-        "Unable to submit reference.",
-        true
+    if (!data.success) {
+      throw new Error(
+        data.message
       );
-
-      return;
     }
 
-
-    showSubmitMessage(
-      "Payment reference submitted successfully. Your order is now awaiting verification.",
-      false
+    window.open(
+      data.url,
+      "_blank"
     );
 
+  } catch (error) {
 
-    if (data.order) {
-
-      order =
-        data.order;
-
-      displayOrder();
-
-    }
-
-  } catch {
-
-    showSubmitMessage(
-      "Connection error. Please try again.",
-      true
-    );
-
+    message.textContent =
+      error.message;
   }
-
 }
 
+async function submitReference() {
 
-// ==============================
-// STATUS
-// ==============================
-
-function formatStatus(status) {
-
-  const names = {
-
-    pending: "Pending",
-
-    processing: "Processing",
-
-    completed: "Completed",
-
-    rejected: "Rejected"
-
-  };
-
-
-  return (
-    names[status] ||
-    status
-  );
-
-}
-
-
-function openStatus() {
-
-  window.location.href =
-    `/status?id=${encodeURIComponent(orderId)}`;
-
-}
-
-
-// ==============================
-// MESSAGES
-// ==============================
-
-function showSubmitMessage(
-  message,
-  error
-) {
-
-  const box =
+  const reference =
     document.getElementById(
-      "submitMessage"
+      "paymentReference"
+    ).value.trim();
+
+  const message =
+    document.getElementById(
+      "message"
     );
 
+  if (!reference) {
 
-  box.textContent =
-    message;
+    message.textContent =
+      "Please enter your payment reference.";
 
-
-  box.className =
-    error
-      ? "error"
-      : "success";
-
-}
-
-
-// ==============================
-// CONTACT
-// ==============================
-
-function displayContact() {
-
-  const box =
-    document.getElementById(
-      "contact"
-    );
-
-
-  if (
-    !config.contact
-  ) {
     return;
   }
 
+  const response =
+    await fetch(
+      "/api/orders/" +
+      encodeURIComponent(
+        orderId
+      ),
+      {
+        method: "PUT",
 
-  let html = "";
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
 
+        body:
+          JSON.stringify({
+            paymentReference:
+              reference
+          })
+      }
+    );
 
-  if (
-    config.contact.whatsapp
-  ) {
+  const data =
+    await response.json();
 
-    html += `
-      <a
-        href="${config.contact.whatsapp}"
-        target="_blank"
-        rel="noopener"
-      >
-        WhatsApp
-      </a>
-    `;
+  if (!data.success) {
 
+    message.textContent =
+      data.message;
+
+    return;
   }
 
+  message.style.color =
+    "#2dd4bf";
 
-  if (
-    config.contact.telegram
-  ) {
-
-    html += `
-      <a
-        href="${config.contact.telegram}"
-        target="_blank"
-        rel="noopener"
-      >
-        Telegram
-      </a>
-    `;
-
-  }
-
-
-  box.innerHTML =
-    html;
-
+  message.textContent =
+    "Payment reference saved.";
 }
 
+function formatNumber(
+  value
+) {
+  return Number(value)
+    .toLocaleString(
+      undefined,
+      {
+        maximumFractionDigits: 8
+      }
+    );
+}
 
-// ==============================
-// BUTTON
-// ==============================
+function escapeHtml(
+  value
+) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
 
-document.getElementById(
-  "submitPayment"
-).addEventListener(
-  "click",
-  submitPayment
+document
+  .getElementById(
+    "submitReference"
+  )
+  .addEventListener(
+    "click",
+    submitReference
+  );
+
+loadOrder().catch(
+  error => {
+    document.getElementById(
+      "message"
+    ).textContent =
+      error.message;
+  }
 );
-
-
-// START
-loadOrder();
 
 </script>
 
